@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "dgSpecHash": "W5OCglCijI4AQwM8IH2m0gDGSZeSP0+48TWyW+HtuVCx/i6ZpQCbEbI62A6BR1Ug9EBmAwU2AcCsYt02DUBD7w==",
+  "success": true,
+  "projectFilePath": "C:\\workspaces\\AlgoZone\\AlgoZone.Funnel\\AlgoZone.Funnel.Datalayer.Binance\\AlgoZone.Funnel.Datalayer.Binance.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\bram.hoven\\.nuget\\packages\\binance.net\\7.2.5\\binance.net.7.2.5.nupkg.sha512",
+    "C:\\Users\\bram.hoven\\.nuget\\packages\\cryptoexchange.net\\4.2.8\\cryptoexchange.net.4.2.8.nupkg.sha512",
+    "C:\\Users\\bram.hoven\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\3.1.0\\microsoft.extensions.logging.abstractions.3.1.0.nupkg.sha512",
+    "C:\\Users\\bram.hoven\\.nuget\\packages\\newtonsoft.json\\12.0.3\\newtonsoft.json.12.0.3.nupkg.sha512"
+  ],
+  "logs": []
+}

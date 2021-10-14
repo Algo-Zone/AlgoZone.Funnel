@@ -1,0 +1,230 @@
+{
+  "version": 3,
+  "targets": {
+    ".NETCoreApp,Version=v3.1": {
+      "Binance.Net/7.2.5": {
+        "type": "package",
+        "dependencies": {
+          "CryptoExchange.Net": "4.2.8"
+        },
+        "compile": {
+          "lib/netstandard2.1/Binance.Net.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.1/Binance.Net.dll": {}
+        }
+      },
+      "CryptoExchange.Net/4.2.8": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.Extensions.Logging.Abstractions": "3.1.0",
+          "Newtonsoft.Json": "12.0.3"
+        },
+        "compile": {
+          "lib/netstandard2.1/CryptoExchange.Net.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.1/CryptoExchange.Net.dll": {}
+        }
+      },
+      "Microsoft.Extensions.Logging.Abstractions/3.1.0": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.0/Microsoft.Extensions.Logging.Abstractions.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/Microsoft.Extensions.Logging.Abstractions.dll": {}
+        }
+      },
+      "Newtonsoft.Json/12.0.3": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.0/Newtonsoft.Json.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/Newtonsoft.Json.dll": {}
+        }
+      },
+      "AlgoZone.Funnel.Businesslayer/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v3.1",
+        "dependencies": {
+          "AlgoZone.Funnel.Datalayer.Binance": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/AlgoZone.Funnel.Businesslayer.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/AlgoZone.Funnel.Businesslayer.dll": {}
+        }
+      },
+      "AlgoZone.Funnel.Datalayer.Binance/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v3.1",
+        "dependencies": {
+          "Binance.Net": "7.2.5"
+        },
+        "compile": {
+          "bin/placeholder/AlgoZone.Funnel.Datalayer.Binance.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/AlgoZone.Funnel.Datalayer.Binance.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Binance.Net/7.2.5": {
+      "sha512": "zizoZn0ZVZ5rh1SS1/dX32zx+uPaFSJtkzU/a9AYqpuquJ+aXC+nlSb/UN64apdeJTC652iyGweBsVZeZRMxKw==",
+      "type": "package",
+      "path": "binance.net/7.2.5",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "binance.net.7.2.5.nupkg.sha512",
+        "binance.net.nuspec",
+        "icon.png",
+        "lib/netstandard2.0/Binance.Net.dll",
+        "lib/netstandard2.0/Binance.Net.xml",
+        "lib/netstandard2.1/Binance.Net.dll",
+        "lib/netstandard2.1/Binance.Net.xml"
+      ]
+    },
+    "CryptoExchange.Net/4.2.8": {
+      "sha512": "CtblMHQwmZXEPJyrmjC2ZtNd5yr9+Gy3WWLSKprBbcU0qyZtbEQgaYMIWtI2CB4r4XMfu7z2/DvPdJKJcBmiJA==",
+      "type": "package",
+      "path": "cryptoexchange.net/4.2.8",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "cryptoexchange.net.4.2.8.nupkg.sha512",
+        "cryptoexchange.net.nuspec",
+        "lib/netstandard2.0/CryptoExchange.Net.dll",
+        "lib/netstandard2.0/CryptoExchange.Net.xml",
+        "lib/netstandard2.1/CryptoExchange.Net.dll",
+        "lib/netstandard2.1/CryptoExchange.Net.xml"
+      ]
+    },
+    "Microsoft.Extensions.Logging.Abstractions/3.1.0": {
+      "sha512": "jjo4YXRx6MIpv6DiRxJjSpl+sPP0+5VW0clMEdLyIAz44PPwrDTFrd5PZckIxIXl1kKZ2KK6IL2nkt0+ug2MQg==",
+      "type": "package",
+      "path": "microsoft.extensions.logging.abstractions/3.1.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/netstandard2.0/Microsoft.Extensions.Logging.Abstractions.dll",
+        "lib/netstandard2.0/Microsoft.Extensions.Logging.Abstractions.xml",
+        "microsoft.extensions.logging.abstractions.3.1.0.nupkg.sha512",
+        "microsoft.extensions.logging.abstractions.nuspec",
+        "packageIcon.png"
+      ]
+    },
+    "Newtonsoft.Json/12.0.3": {
+      "sha512": "6mgjfnRB4jKMlzHSl+VD+oUc1IebOZabkbyWj2RiTgWwYPPuaK1H97G1sHqGwPlS5npiF5Q0OrxN1wni2n5QWg==",
+      "type": "package",
+      "path": "newtonsoft.json/12.0.3",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.md",
+        "lib/net20/Newtonsoft.Json.dll",
+        "lib/net20/Newtonsoft.Json.xml",
+        "lib/net35/Newtonsoft.Json.dll",
+        "lib/net35/Newtonsoft.Json.xml",
+        "lib/net40/Newtonsoft.Json.dll",
+        "lib/net40/Newtonsoft.Json.xml",
+        "lib/net45/Newtonsoft.Json.dll",
+        "lib/net45/Newtonsoft.Json.xml",
+        "lib/netstandard1.0/Newtonsoft.Json.dll",
+        "lib/netstandard1.0/Newtonsoft.Json.xml",
+        "lib/netstandard1.3/Newtonsoft.Json.dll",
+        "lib/netstandard1.3/Newtonsoft.Json.xml",
+        "lib/netstandard2.0/Newtonsoft.Json.dll",
+        "lib/netstandard2.0/Newtonsoft.Json.xml",
+        "lib/portable-net40+sl5+win8+wp8+wpa81/Newtonsoft.Json.dll",
+        "lib/portable-net40+sl5+win8+wp8+wpa81/Newtonsoft.Json.xml",
+        "lib/portable-net45+win8+wp8+wpa81/Newtonsoft.Json.dll",
+        "lib/portable-net45+win8+wp8+wpa81/Newtonsoft.Json.xml",
+        "newtonsoft.json.12.0.3.nupkg.sha512",
+        "newtonsoft.json.nuspec",
+        "packageIcon.png"
+      ]
+    },
+    "AlgoZone.Funnel.Businesslayer/1.0.0": {
+      "type": "project",
+      "path": "../AlgoZone.Funnel.Businesslayer/AlgoZone.Funnel.Businesslayer.csproj",
+      "msbuildProject": "../AlgoZone.Funnel.Businesslayer/AlgoZone.Funnel.Businesslayer.csproj"
+    },
+    "AlgoZone.Funnel.Datalayer.Binance/1.0.0": {
+      "type": "project",
+      "path": "../AlgoZone.Funnel.Datalayer.Binance/AlgoZone.Funnel.Datalayer.Binance.csproj",
+      "msbuildProject": "../AlgoZone.Funnel.Datalayer.Binance/AlgoZone.Funnel.Datalayer.Binance.csproj"
+    }
+  },
+  "projectFileDependencyGroups": {
+    ".NETCoreApp,Version=v3.1": [
+      "AlgoZone.Funnel.Businesslayer >= 1.0.0"
+    ]
+  },
+  "packageFolders": {
+    "C:\\Users\\bram.hoven\\.nuget\\packages\\": {}
+  },
+  "project": {
+    "version": "1.0.0",
+    "restore": {
+      "projectUniqueName": "C:\\workspaces\\AlgoZone\\AlgoZone.Funnel\\AlgoZone.Funnel\\AlgoZone.Funnel.csproj",
+      "projectName": "AlgoZone.Funnel",
+      "projectPath": "C:\\workspaces\\AlgoZone\\AlgoZone.Funnel\\AlgoZone.Funnel\\AlgoZone.Funnel.csproj",
+      "packagesPath": "C:\\Users\\bram.hoven\\.nuget\\packages\\",
+      "outputPath": "C:\\workspaces\\AlgoZone\\AlgoZone.Funnel\\AlgoZone.Funnel\\obj\\",
+      "projectStyle": "PackageReference",
+      "configFilePaths": [
+        "C:\\Users\\bram.hoven\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+      ],
+      "originalTargetFrameworks": [
+        "netcoreapp3.1"
+      ],
+      "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "https://api.nuget.org/v3/index.json": {}
+      },
+      "frameworks": {
+        "netcoreapp3.1": {
+          "targetAlias": "netcoreapp3.1",
+          "projectReferences": {
+            "C:\\workspaces\\AlgoZone\\AlgoZone.Funnel\\AlgoZone.Funnel.Businesslayer\\AlgoZone.Funnel.Businesslayer.csproj": {
+              "projectPath": "C:\\workspaces\\AlgoZone\\AlgoZone.Funnel\\AlgoZone.Funnel.Businesslayer\\AlgoZone.Funnel.Businesslayer.csproj"
+            }
+          }
+        }
+      },
+      "warningProperties": {
+        "warnAsError": [
+          "NU1605"
+        ]
+      }
+    },
+    "frameworks": {
+      "netcoreapp3.1": {
+        "targetAlias": "netcoreapp3.1",
+        "imports": [
+          "net461",
+          "net462",
+          "net47",
+          "net471",
+          "net472",
+          "net48"
+        ],
+        "assetTargetFallback": true,
+        "warn": true,
+        "frameworkReferences": {
+          "Microsoft.NETCore.App": {
+            "privateAssets": "all"
+          }
+        },
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.401\\RuntimeIdentifierGraph.json"
+      }
+    }
+  }
+}

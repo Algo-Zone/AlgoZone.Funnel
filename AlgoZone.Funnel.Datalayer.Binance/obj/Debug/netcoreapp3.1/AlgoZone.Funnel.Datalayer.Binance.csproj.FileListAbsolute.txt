@@ -1,0 +1,10 @@
+C:\workspaces\AlgoZone\AlgoZone.Funnel\AlgoZone.Funnel.Datalayer.Binance\bin\Debug\netcoreapp3.1\AlgoZone.Funnel.Datalayer.Binance.deps.json
+C:\workspaces\AlgoZone\AlgoZone.Funnel\AlgoZone.Funnel.Datalayer.Binance\bin\Debug\netcoreapp3.1\AlgoZone.Funnel.Datalayer.Binance.dll
+C:\workspaces\AlgoZone\AlgoZone.Funnel\AlgoZone.Funnel.Datalayer.Binance\bin\Debug\netcoreapp3.1\AlgoZone.Funnel.Datalayer.Binance.pdb
+C:\workspaces\AlgoZone\AlgoZone.Funnel\AlgoZone.Funnel.Datalayer.Binance\obj\Debug\netcoreapp3.1\AlgoZone.Funnel.Datalayer.Binance.csproj.AssemblyReference.cache
+C:\workspaces\AlgoZone\AlgoZone.Funnel\AlgoZone.Funnel.Datalayer.Binance\obj\Debug\netcoreapp3.1\AlgoZone.Funnel.Datalayer.Binance.GeneratedMSBuildEditorConfig.editorconfig
+C:\workspaces\AlgoZone\AlgoZone.Funnel\AlgoZone.Funnel.Datalayer.Binance\obj\Debug\netcoreapp3.1\AlgoZone.Funnel.Datalayer.Binance.AssemblyInfoInputs.cache
+C:\workspaces\AlgoZone\AlgoZone.Funnel\AlgoZone.Funnel.Datalayer.Binance\obj\Debug\netcoreapp3.1\AlgoZone.Funnel.Datalayer.Binance.AssemblyInfo.cs
+C:\workspaces\AlgoZone\AlgoZone.Funnel\AlgoZone.Funnel.Datalayer.Binance\obj\Debug\netcoreapp3.1\AlgoZone.Funnel.Datalayer.Binance.csproj.CoreCompileInputs.cache
+C:\workspaces\AlgoZone\AlgoZone.Funnel\AlgoZone.Funnel.Datalayer.Binance\obj\Debug\netcoreapp3.1\AlgoZone.Funnel.Datalayer.Binance.dll
+C:\workspaces\AlgoZone\AlgoZone.Funnel\AlgoZone.Funnel.Datalayer.Binance\obj\Debug\netcoreapp3.1\AlgoZone.Funnel.Datalayer.Binance.pdb
