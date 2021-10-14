@@ -1,2 +1,2 @@
 # AlgoZone.Funnel
-Algo trading platofm
+The Funnel is the first service in the AlgoZone algorithmic trading platform
