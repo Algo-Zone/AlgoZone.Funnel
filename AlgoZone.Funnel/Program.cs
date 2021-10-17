@@ -18,7 +18,12 @@ namespace AlgoZone.Funnel
             var inputManager = new BinanceInputManager();
             inputManager.SubscribeToSymbolTickerUpdates("BTCUSDT", tick =>
             {
-                Console.WriteLine($"{tick.Data.BidPrice}:{tick.Data.AskPrice} {tick.Data.BidQuantity}:{tick.Data.AskQuantity}");
+                Console.WriteLine($"Tick: {tick.Data.BidPrice}:{tick.Data.AskPrice} {tick.Data.BidQuantity}:{tick.Data.AskQuantity}");
+            });
+            
+            inputManager.SubscribeToSymbolOrderBookUpdates("BTCUSDT", 1000, orderBook =>
+            {
+                Console.WriteLine($"Order book: {orderBook.Data.Asks.Count}:{orderBook.Data.Bids.Count}");
             });
 
             _quitEvent.WaitOne();

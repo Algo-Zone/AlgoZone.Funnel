@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using AlgoZone.Funnel.Businesslayer.InputFlow.Models;
 using AlgoZone.Funnel.Datalayer.Binance;
 
@@ -22,6 +23,18 @@ namespace AlgoZone.Funnel.Businesslayer.InputFlow.Providers
         #endregion
 
         #region Methods
+
+        /// <inheritdoc />
+        public void Dispose()
+        {
+            _binanceDal.Dispose();
+        }
+
+        /// <inheritdoc />
+        public bool SubscribeToSymbolOrderBookUpdates(string symbol, int interval, Action<Models.EventData<SymbolOrderBook>> onUpdate)
+        {
+            return _binanceDal.SubscribeToSymbolOrderBookUpdates(symbol, interval, eventData => { onUpdate.Invoke(MapBinanceSymbolOrderBook(eventData)); });
+        }
 
         /// <inheritdoc />
         public bool SubscribeToSymbolTickerUpdates(string symbol, Action<Models.EventData<SymbolTick>> onTick)
@@ -49,14 +62,36 @@ namespace AlgoZone.Funnel.Businesslayer.InputFlow.Providers
             };
         }
 
-        #endregion
-
-        #endregion
-
-        /// <inheritdoc />
-        public void Dispose()
+        private static Models.EventData<SymbolOrderBook> MapBinanceSymbolOrderBook(Datalayer.Binance.EventData<SymbolBinanceOrderBook> binanceOrderBook)
         {
-            _binanceDal.Dispose();
+            return new Models.EventData<SymbolOrderBook>
+            {
+                Data = new SymbolOrderBook
+                {
+                    Asks = binanceOrderBook.Data.Asks.Select(MapSymbolOrderBookEntry).ToList(),
+                    Bids = binanceOrderBook.Data.Bids.Select(MapSymbolOrderBookEntry).ToList(),
+                    Symbol = binanceOrderBook.Data.Symbol,
+                    FirstUpdatedId = binanceOrderBook.Data.FirstUpdatedId,
+                    LastUpdateId = binanceOrderBook.Data.LastUpdateId,
+                    EventTime = binanceOrderBook.Data.EventTime
+                },
+                Timestamp = binanceOrderBook.Timestamp,
+                Topic = binanceOrderBook.Topic,
+                OriginalData = binanceOrderBook.OriginalData
+            };
         }
+
+        private static SymbolOrderBookEntry MapSymbolOrderBookEntry(SymbolOrderBookEntry orderBookEntry)
+        {
+            return new SymbolOrderBookEntry
+            {
+                Price = orderBookEntry.Price,
+                Quantity = orderBookEntry.Quantity
+            };
+        }
+
+        #endregion
+
+        #endregion
     }
 }
