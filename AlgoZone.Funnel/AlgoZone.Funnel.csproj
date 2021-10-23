@@ -7,6 +7,11 @@
 
     <ItemGroup>
       <ProjectReference Include="..\AlgoZone.Funnel.Businesslayer\AlgoZone.Funnel.Businesslayer.csproj" />
+      <ProjectReference Include="..\AlgoZone.Funnel.Exceptions\AlgoZone.Funnel.Exceptions.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="CommandLineParser" Version="2.8.0" />
     </ItemGroup>
 
 </Project>

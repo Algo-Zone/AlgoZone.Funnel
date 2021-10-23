@@ -3,7 +3,7 @@ using AlgoZone.Funnel.Businesslayer.InputFlow.Models;
 
 namespace AlgoZone.Funnel.Businesslayer.InputFlow
 {
-    public interface IInputManager
+    public interface IInputManager : IDisposable
     {
         #region Methods
 

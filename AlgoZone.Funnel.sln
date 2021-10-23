@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlgoZone.Funnel.Businesslay
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlgoZone.Funnel.Datalayer.Binance", "AlgoZone.Funnel.Datalayer.Binance\AlgoZone.Funnel.Datalayer.Binance.csproj", "{1E169AD4-7D3F-485C-B919-417280B8484B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlgoZone.Funnel.Exceptions", "AlgoZone.Funnel.Exceptions\AlgoZone.Funnel.Exceptions.csproj", "{7F3E03C9-4067-460A-B13F-FA7F11279DA4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{1E169AD4-7D3F-485C-B919-417280B8484B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1E169AD4-7D3F-485C-B919-417280B8484B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1E169AD4-7D3F-485C-B919-417280B8484B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F3E03C9-4067-460A-B13F-FA7F11279DA4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F3E03C9-4067-460A-B13F-FA7F11279DA4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F3E03C9-4067-460A-B13F-FA7F11279DA4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F3E03C9-4067-460A-B13F-FA7F11279DA4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
