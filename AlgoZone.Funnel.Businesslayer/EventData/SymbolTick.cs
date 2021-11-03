@@ -1,6 +1,6 @@
-﻿namespace AlgoZone.Funnel.Businesslayer.InputFlow.Models
+﻿namespace AlgoZone.Funnel.Businesslayer.EventData
 {
-    public class SymbolTick
+    public class SymbolTick : ISymbolData
     {
         #region Properties
 
@@ -28,6 +28,9 @@
         /// The close price 24 hours ago
         /// </summary>
         public decimal PrevDayClosePrice { get; set; }
+
+        /// <inheritdoc />
+        public string Symbol { get; set; }
 
         #endregion
     }

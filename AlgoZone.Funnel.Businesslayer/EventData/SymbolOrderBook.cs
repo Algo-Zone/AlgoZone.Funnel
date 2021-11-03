@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using AlgoZone.Funnel.Datalayer.Binance;
 
-namespace AlgoZone.Funnel.Businesslayer.InputFlow.Models
+namespace AlgoZone.Funnel.Businesslayer.EventData
 {
-    public class SymbolOrderBook
+    public class SymbolOrderBook : ISymbolData
     {
         #region Properties
 
@@ -18,6 +18,7 @@ namespace AlgoZone.Funnel.Businesslayer.InputFlow.Models
 
         public long LastUpdateId { get; set; }
 
+        /// <inheritdoc />
         public string Symbol { get; set; }
 
         #endregion

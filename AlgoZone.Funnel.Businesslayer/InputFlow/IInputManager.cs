@@ -1,5 +1,5 @@
 ﻿using System;
-using AlgoZone.Funnel.Businesslayer.InputFlow.Models;
+using AlgoZone.Funnel.Businesslayer.EventData;
 
 namespace AlgoZone.Funnel.Businesslayer.InputFlow
 {
@@ -14,7 +14,7 @@ namespace AlgoZone.Funnel.Businesslayer.InputFlow
         /// <param name="interval">The interval in milliseconds.</param>
         /// <param name="onUpdate">The event callback.</param>
         /// <returns></returns>
-        bool SubscribeToSymbolOrderBookUpdates(string symbol, int interval, Action<EventData<SymbolOrderBook>> onUpdate);
+        bool SubscribeToSymbolOrderBookUpdates(string symbol, int interval, Action<IEventData<SymbolOrderBook>> onUpdate);
 
         /// <summary>
         /// Subscribes to the tick event of a specific symbol.
@@ -22,7 +22,7 @@ namespace AlgoZone.Funnel.Businesslayer.InputFlow
         /// <param name="symbol">The symbol to subscribe to.</param>
         /// <param name="onTick">The event callback.</param>
         /// <returns></returns>
-        bool SubscribeToSymbolTickerUpdates(string symbol, Action<EventData<SymbolTick>> onTick);
+        bool SubscribeToSymbolTickerUpdates(string symbol, Action<IEventData<SymbolTick>> onTick);
 
         #endregion
     }

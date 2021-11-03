@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using AlgoZone.Funnel.Businesslayer.InputFlow.Models;
+using AlgoZone.Funnel.Businesslayer.EventData;
 using AlgoZone.Funnel.Datalayer.Binance;
 
 namespace AlgoZone.Funnel.Businesslayer.InputFlow.Providers
@@ -31,22 +31,22 @@ namespace AlgoZone.Funnel.Businesslayer.InputFlow.Providers
         }
 
         /// <inheritdoc />
-        public bool SubscribeToSymbolOrderBookUpdates(string symbol, int interval, Action<Models.EventData<SymbolOrderBook>> onUpdate)
+        public bool SubscribeToSymbolOrderBookUpdates(string symbol, int interval, Action<IEventData<SymbolOrderBook>> onUpdate)
         {
             return _binanceDal.SubscribeToSymbolOrderBookUpdates(symbol, interval, eventData => { onUpdate.Invoke(MapBinanceSymbolOrderBook(eventData)); });
         }
 
         /// <inheritdoc />
-        public bool SubscribeToSymbolTickerUpdates(string symbol, Action<Models.EventData<SymbolTick>> onTick)
+        public bool SubscribeToSymbolTickerUpdates(string symbol, Action<IEventData<SymbolTick>> onTick)
         {
             return _binanceDal.SubscribeToSymbolTicker(symbol, eventData => { onTick.Invoke(MapBinanceSymbolTick(eventData)); });
         }
 
         #region Static Methods
 
-        private static Models.EventData<SymbolTick> MapBinanceSymbolTick(Datalayer.Binance.EventData<SymbolBinanceTick> binanceEventData)
+        private static IEventData<SymbolTick> MapBinanceSymbolTick(Datalayer.Binance.EventData<SymbolBinanceTick> binanceEventData)
         {
-            return new Models.EventData<SymbolTick>
+            return new EventData.EventData<SymbolTick>
             {
                 Data = new SymbolTick
                 {
@@ -54,7 +54,8 @@ namespace AlgoZone.Funnel.Businesslayer.InputFlow.Providers
                     AskQuantity = binanceEventData.Data.AskQuantity,
                     BidPrice = binanceEventData.Data.BidPrice,
                     BidQuantity = binanceEventData.Data.BidQuantity,
-                    PrevDayClosePrice = binanceEventData.Data.PrevDayClosePrice
+                    PrevDayClosePrice = binanceEventData.Data.PrevDayClosePrice,
+                    Symbol = binanceEventData.Topic
                 },
                 Timestamp = binanceEventData.Timestamp,
                 Topic = binanceEventData.Topic,
@@ -62,9 +63,9 @@ namespace AlgoZone.Funnel.Businesslayer.InputFlow.Providers
             };
         }
 
-        private static Models.EventData<SymbolOrderBook> MapBinanceSymbolOrderBook(Datalayer.Binance.EventData<SymbolBinanceOrderBook> binanceOrderBook)
+        private static IEventData<SymbolOrderBook> MapBinanceSymbolOrderBook(Datalayer.Binance.EventData<SymbolBinanceOrderBook> binanceOrderBook)
         {
-            return new Models.EventData<SymbolOrderBook>
+            return new EventData.EventData<SymbolOrderBook>
             {
                 Data = new SymbolOrderBook
                 {

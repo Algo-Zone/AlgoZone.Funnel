@@ -1,4 +1,4 @@
-﻿namespace AlgoZone.Funnel.Businesslayer.InputFlow.Models
+﻿namespace AlgoZone.Funnel.Businesslayer.EventData
 {
     public class OrderBookEntry
     {
