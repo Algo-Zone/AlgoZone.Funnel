@@ -3,7 +3,6 @@ using System;
 namespace AlgoZone.Funnel.Businesslayer.EventData
 {
     public interface IEventData<TSymbolData>
-        where TSymbolData : ISymbolData
     {
         #region Properties
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading;
+using AlgoZone.Funnel.Businesslayer.Funnel;
 using AlgoZone.Funnel.Businesslayer.InputFlow;
 using AlgoZone.Funnel.Exceptions;
 using AlgoZone.Funnel.Model;
@@ -7,7 +8,7 @@ using CommandLine;
 
 namespace AlgoZone.Funnel
 {
-    public class Program
+    public static class Program
     {
         #region Fields
 
@@ -41,11 +42,12 @@ namespace AlgoZone.Funnel
                           if (inputManager == null)
                               throw new Exception();
 
-                          foreach (var symbol in o.Symbols)
-                          {
-                              inputManager.SubscribeToSymbolTickerUpdates(symbol, tick => { Console.WriteLine($"Tick: {tick.Data.BidPrice}:{tick.Data.AskPrice} {tick.Data.BidQuantity}:{tick.Data.AskQuantity}"); });
-                              inputManager.SubscribeToSymbolOrderBookUpdates(symbol, 1000, orderBook => { Console.WriteLine($"Order book: {orderBook.Data.Asks.Count}:{orderBook.Data.Bids.Count}"); });
-                          }
+                          var funnelManager = new FunnelManager(inputManager);
+
+                          if (o.AllSymbols)
+                              funnelManager.RunFunnel();
+                          else
+                              funnelManager.RunFunnel(o.Symbols);
                       });
             }
             catch (NoExchangeProvidedException e0)

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using AlgoZone.Funnel.Businesslayer.EventData;
 using AlgoZone.Funnel.Datalayer.Binance;
@@ -42,7 +43,32 @@ namespace AlgoZone.Funnel.Businesslayer.InputFlow.Providers
             return _binanceDal.SubscribeToSymbolTicker(symbol, eventData => { onTick.Invoke(MapBinanceSymbolTick(eventData)); });
         }
 
+        /// <inheritdoc />
+        public bool SubscribeToAllSymbolTickerUpdates(Action<IEventData<IEnumerable<SymbolTick>>> onTick)
+        {
+            return _binanceDal.SubscribeToAllSymbolTicker(eventData => onTick.Invoke(MapBinanceSymbolTicks(eventData)));
+        }
+
         #region Static Methods
+
+        private static IEventData<SymbolOrderBook> MapBinanceSymbolOrderBook(Datalayer.Binance.EventData<SymbolBinanceOrderBook> binanceOrderBook)
+        {
+            return new EventData.EventData<SymbolOrderBook>
+            {
+                Data = new SymbolOrderBook
+                {
+                    Asks = binanceOrderBook.Data.Asks.Select(MapSymbolOrderBookEntry).ToList(),
+                    Bids = binanceOrderBook.Data.Bids.Select(MapSymbolOrderBookEntry).ToList(),
+                    Symbol = binanceOrderBook.Data.Symbol,
+                    FirstUpdatedId = binanceOrderBook.Data.FirstUpdatedId,
+                    LastUpdateId = binanceOrderBook.Data.LastUpdateId,
+                    EventTime = binanceOrderBook.Data.EventTime
+                },
+                Timestamp = binanceOrderBook.Timestamp,
+                Topic = binanceOrderBook.Topic,
+                OriginalData = binanceOrderBook.OriginalData
+            };
+        }
 
         private static IEventData<SymbolTick> MapBinanceSymbolTick(Datalayer.Binance.EventData<SymbolBinanceTick> binanceEventData)
         {
@@ -63,22 +89,22 @@ namespace AlgoZone.Funnel.Businesslayer.InputFlow.Providers
             };
         }
 
-        private static IEventData<SymbolOrderBook> MapBinanceSymbolOrderBook(Datalayer.Binance.EventData<SymbolBinanceOrderBook> binanceOrderBook)
+        private static IEventData<IEnumerable<SymbolTick>> MapBinanceSymbolTicks(Datalayer.Binance.EventData<IEnumerable<SymbolBinanceTick>> binanceEventData)
         {
-            return new EventData.EventData<SymbolOrderBook>
+            return new EventDataCollection<IEnumerable<SymbolTick>>
             {
-                Data = new SymbolOrderBook
+                Data = binanceEventData.Data.Select(bt => new SymbolTick
                 {
-                    Asks = binanceOrderBook.Data.Asks.Select(MapSymbolOrderBookEntry).ToList(),
-                    Bids = binanceOrderBook.Data.Bids.Select(MapSymbolOrderBookEntry).ToList(),
-                    Symbol = binanceOrderBook.Data.Symbol,
-                    FirstUpdatedId = binanceOrderBook.Data.FirstUpdatedId,
-                    LastUpdateId = binanceOrderBook.Data.LastUpdateId,
-                    EventTime = binanceOrderBook.Data.EventTime
-                },
-                Timestamp = binanceOrderBook.Timestamp,
-                Topic = binanceOrderBook.Topic,
-                OriginalData = binanceOrderBook.OriginalData
+                    AskPrice = bt.AskPrice,
+                    AskQuantity = bt.AskQuantity,
+                    BidPrice = bt.BidPrice,
+                    BidQuantity = bt.BidQuantity,
+                    PrevDayClosePrice = bt.PrevDayClosePrice,
+                    Symbol = bt.Symbol
+                }),
+                Timestamp = binanceEventData.Timestamp,
+                Topic = binanceEventData.Topic,
+                OriginalData = binanceEventData.OriginalData
             };
         }
 

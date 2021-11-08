@@ -3,7 +3,7 @@
     public class SymbolBinanceTick
     {
         #region Properties
-
+        
         /// <summary>
         /// The best ask price in the order book
         /// </summary>
@@ -28,6 +28,11 @@
         /// The close price 24 hours ago
         /// </summary>
         public decimal PrevDayClosePrice { get; set; }
+
+        /// <summary>
+        /// The symbol.
+        /// </summary>
+        public string Symbol { get; set; }
 
         #endregion
     }

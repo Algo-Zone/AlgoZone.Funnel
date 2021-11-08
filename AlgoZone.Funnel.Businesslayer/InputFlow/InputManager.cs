@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using AlgoZone.Funnel.Businesslayer.EventData;
 using AlgoZone.Funnel.Businesslayer.InputFlow.Providers;
 
@@ -27,6 +28,12 @@ namespace AlgoZone.Funnel.Businesslayer.InputFlow
         public void Dispose()
         {
             _inputProvider.Dispose();
+        }
+
+        /// <inheritdoc />
+        public bool SubscribeToAllSymbolTickerUpdates(Action<IEventData<IEnumerable<SymbolTick>>> onTick)
+        {
+            return _inputProvider.SubscribeToAllSymbolTickerUpdates(onTick);
         }
 
         /// <inheritdoc />

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Binance.Net;
 using Binance.Net.Interfaces;
@@ -33,6 +34,16 @@ namespace AlgoZone.Funnel.Datalayer.Binance
         {
             _client?.Dispose();
             _socketClient?.Dispose();
+        }
+
+        /// <summary>
+        /// Subscribes to the symbol tick updates.
+        /// </summary>
+        /// <param name="onTick">The event callback.</param>
+        /// <returns></returns>
+        public bool SubscribeToAllSymbolTicker(Action<EventData<IEnumerable<SymbolBinanceTick>>> onTick)
+        {
+            return _socketClient.Spot.SubscribeToAllSymbolTickerUpdatesAsync(eventData => { onTick.Invoke(MapSymbolTicks(eventData)); }).Result.Success;
         }
 
         /// <summary>
@@ -88,6 +99,27 @@ namespace AlgoZone.Funnel.Datalayer.Binance
             };
         }
 
+        private static EventData<IEnumerable<SymbolBinanceTick>> MapSymbolTicks(DataEvent<IEnumerable<IBinanceTick>> binanceTick)
+        {
+            return new EventData<IEnumerable<SymbolBinanceTick>>
+            {
+                Data = binanceTick.Data.Select(bt =>
+                                                   new SymbolBinanceTick
+                                                   {
+                                                       AskPrice = bt.AskPrice,
+                                                       AskQuantity = bt.AskQuantity,
+                                                       BidPrice = bt.BidPrice,
+                                                       BidQuantity = bt.BidQuantity,
+                                                       PrevDayClosePrice = bt.PrevDayClosePrice,
+                                                       Symbol = bt.Symbol
+                                                   }
+                ),
+                Timestamp = binanceTick.Timestamp,
+                Topic = binanceTick.Topic,
+                OriginalData = binanceTick.OriginalData
+            };
+        }
+
         private static EventData<SymbolBinanceTick> MapSymbolTick(DataEvent<IBinanceTick> binanceTick)
         {
             return new EventData<SymbolBinanceTick>
@@ -98,7 +130,8 @@ namespace AlgoZone.Funnel.Datalayer.Binance
                     AskQuantity = binanceTick.Data.AskQuantity,
                     BidPrice = binanceTick.Data.BidPrice,
                     BidQuantity = binanceTick.Data.BidQuantity,
-                    PrevDayClosePrice = binanceTick.Data.PrevDayClosePrice
+                    PrevDayClosePrice = binanceTick.Data.PrevDayClosePrice,
+                    Symbol = binanceTick.Data.Symbol
                 },
                 Timestamp = binanceTick.Timestamp,
                 Topic = binanceTick.Topic,
