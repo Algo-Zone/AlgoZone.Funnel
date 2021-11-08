@@ -2,14 +2,9 @@ using System;
 
 namespace AlgoZone.Funnel.Businesslayer.EventData
 {
-    public interface IEventData<TSymbolData>
+    public interface IEventData
     {
         #region Properties
-
-        /// <summary>
-        /// The received data deserialized into an object
-        /// </summary>
-        TSymbolData Data { get; set; }
 
         /// <summary>
         /// The event data type.

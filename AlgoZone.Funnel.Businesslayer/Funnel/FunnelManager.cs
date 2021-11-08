@@ -38,10 +38,7 @@ namespace AlgoZone.Funnel.Businesslayer.Funnel
         {
             _inputManager.SubscribeToAllSymbolTickerUpdates(tick =>
             {
-                foreach (var tickData in tick.Data)
-                {
-                    Console.WriteLine($"[{tickData.Symbol}] Tick: {tickData.BidPrice}:{tickData.AskPrice} {tickData.BidQuantity}:{tickData.AskQuantity}");
-                }
+                Console.WriteLine($"[{tick.Data.Symbol}] Tick: {tick.Data.BidPrice}:{tick.Data.AskPrice} {tick.Data.BidQuantity}:{tick.Data.AskQuantity}");
             });
         }
 

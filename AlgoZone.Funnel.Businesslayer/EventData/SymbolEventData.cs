@@ -2,7 +2,7 @@
 
 namespace AlgoZone.Funnel.Businesslayer.EventData
 {
-    public class EventData<TSymbolData> : IEventData<TSymbolData>
+    public class SymbolEventData<TSymbolData> : ISymbolEventData<TSymbolData>
         where TSymbolData : ISymbolData
     {
         #region Properties

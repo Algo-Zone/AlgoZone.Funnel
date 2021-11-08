@@ -41,7 +41,7 @@ namespace AlgoZone.Funnel.Datalayer.Binance
         /// </summary>
         /// <param name="onTick">The event callback.</param>
         /// <returns></returns>
-        public bool SubscribeToAllSymbolTicker(Action<EventData<IEnumerable<SymbolBinanceTick>>> onTick)
+        public bool SubscribeToAllSymbolTicker(Action<BinanceSymbolEvent<IEnumerable<SymbolBinanceTick>>> onTick)
         {
             return _socketClient.Spot.SubscribeToAllSymbolTickerUpdatesAsync(eventData => { onTick.Invoke(MapSymbolTicks(eventData)); }).Result.Success;
         }
@@ -53,7 +53,7 @@ namespace AlgoZone.Funnel.Datalayer.Binance
         /// <param name="interval">The interval in milliseconds.</param>
         /// <param name="onUpdate">The event callback.</param>
         /// <returns></returns>
-        public bool SubscribeToSymbolOrderBookUpdates(string symbol, int interval, Action<EventData<SymbolBinanceOrderBook>> onUpdate)
+        public bool SubscribeToSymbolOrderBookUpdates(string symbol, int interval, Action<BinanceSymbolEvent<SymbolBinanceOrderBook>> onUpdate)
         {
             return _socketClient.Spot.SubscribeToOrderBookUpdatesAsync(symbol, interval, eventData => { onUpdate.Invoke(MapSymbolOrderBook(eventData)); }).Result.Success;
         }
@@ -64,16 +64,16 @@ namespace AlgoZone.Funnel.Datalayer.Binance
         /// <param name="symbol">The symbol to subscribe to.</param>
         /// <param name="onTick">The event callback.</param>
         /// <returns></returns>
-        public bool SubscribeToSymbolTicker(string symbol, Action<EventData<SymbolBinanceTick>> onTick)
+        public bool SubscribeToSymbolTicker(string symbol, Action<BinanceSymbolEvent<SymbolBinanceTick>> onTick)
         {
             return _socketClient.Spot.SubscribeToSymbolTickerUpdatesAsync(symbol, eventData => { onTick.Invoke(MapSymbolTick(eventData)); }).Result.Success;
         }
 
         #region Static Methods
 
-        private static EventData<SymbolBinanceOrderBook> MapSymbolOrderBook(DataEvent<IBinanceEventOrderBook> binanceOrderBook)
+        private static BinanceSymbolEvent<SymbolBinanceOrderBook> MapSymbolOrderBook(DataEvent<IBinanceEventOrderBook> binanceOrderBook)
         {
-            return new EventData<SymbolBinanceOrderBook>
+            return new BinanceSymbolEvent<SymbolBinanceOrderBook>
             {
                 Data = new SymbolBinanceOrderBook
                 {
@@ -99,9 +99,9 @@ namespace AlgoZone.Funnel.Datalayer.Binance
             };
         }
 
-        private static EventData<IEnumerable<SymbolBinanceTick>> MapSymbolTicks(DataEvent<IEnumerable<IBinanceTick>> binanceTick)
+        private static BinanceSymbolEvent<IEnumerable<SymbolBinanceTick>> MapSymbolTicks(DataEvent<IEnumerable<IBinanceTick>> binanceTick)
         {
-            return new EventData<IEnumerable<SymbolBinanceTick>>
+            return new BinanceSymbolEvent<IEnumerable<SymbolBinanceTick>>
             {
                 Data = binanceTick.Data.Select(bt =>
                                                    new SymbolBinanceTick
@@ -120,9 +120,9 @@ namespace AlgoZone.Funnel.Datalayer.Binance
             };
         }
 
-        private static EventData<SymbolBinanceTick> MapSymbolTick(DataEvent<IBinanceTick> binanceTick)
+        private static BinanceSymbolEvent<SymbolBinanceTick> MapSymbolTick(DataEvent<IBinanceTick> binanceTick)
         {
-            return new EventData<SymbolBinanceTick>
+            return new BinanceSymbolEvent<SymbolBinanceTick>
             {
                 Data = new SymbolBinanceTick
                 {

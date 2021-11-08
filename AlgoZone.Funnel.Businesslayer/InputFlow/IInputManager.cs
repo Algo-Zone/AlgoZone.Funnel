@@ -13,7 +13,7 @@ namespace AlgoZone.Funnel.Businesslayer.InputFlow
         /// </summary>
         /// <param name="onTick">The event callback.</param>
         /// <returns></returns>
-        bool SubscribeToAllSymbolTickerUpdates(Action<IEventData<IEnumerable<SymbolTick>>> onTick);
+        bool SubscribeToAllSymbolTickerUpdates(Action<ISymbolEventData<SymbolTick>> onTick);
 
         /// <summary>
         /// Subscribes to the order book update event.
@@ -22,7 +22,7 @@ namespace AlgoZone.Funnel.Businesslayer.InputFlow
         /// <param name="interval">The interval in milliseconds.</param>
         /// <param name="onUpdate">The event callback.</param>
         /// <returns></returns>
-        bool SubscribeToSymbolOrderBookUpdates(string symbol, int interval, Action<IEventData<SymbolOrderBook>> onUpdate);
+        bool SubscribeToSymbolOrderBookUpdates(string symbol, int interval, Action<ISymbolEventData<SymbolOrderBook>> onUpdate);
 
         /// <summary>
         /// Subscribes to the tick event of a specific symbol.
@@ -30,7 +30,7 @@ namespace AlgoZone.Funnel.Businesslayer.InputFlow
         /// <param name="symbol">The symbol to subscribe to.</param>
         /// <param name="onTick">The event callback.</param>
         /// <returns></returns>
-        bool SubscribeToSymbolTickerUpdates(string symbol, Action<IEventData<SymbolTick>> onTick);
+        bool SubscribeToSymbolTickerUpdates(string symbol, Action<ISymbolEventData<SymbolTick>> onTick);
 
         #endregion
     }

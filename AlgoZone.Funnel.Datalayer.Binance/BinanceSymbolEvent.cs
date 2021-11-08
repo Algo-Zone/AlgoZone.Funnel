@@ -1,18 +1,13 @@
-using System;
-using System.Collections.Generic;
+﻿using System;
 
-namespace AlgoZone.Funnel.Businesslayer.EventData
+namespace AlgoZone.Funnel.Datalayer.Binance
 {
-    public class EventDataCollection<TSymbolData> : IEventData<TSymbolData>
-        where TSymbolData : IEnumerable<ISymbolData>
+    public class BinanceSymbolEvent<TSymbolData> : IBinanceEvent, IBinanceSymbolData<TSymbolData>
     {
         #region Properties
 
         /// <inheritdoc />
         public TSymbolData Data { get; set; }
-
-        /// <inheritdoc />
-        public EventDataType EventDataType { get; set; }
 
         /// <inheritdoc />
         public string OriginalData { get; set; }
