@@ -4,6 +4,7 @@ using AlgoZone.Funnel.Datalayer.Binance;
 
 namespace AlgoZone.Funnel.Businesslayer.EventData
 {
+    [Serializable]
     public class SymbolOrderBook : ISymbolData
     {
         #region Properties

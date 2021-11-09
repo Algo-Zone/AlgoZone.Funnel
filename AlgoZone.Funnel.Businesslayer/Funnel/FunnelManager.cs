@@ -1,14 +1,17 @@
 using System;
 using System.Collections.Generic;
 using AlgoZone.Funnel.Businesslayer.InputFlow;
+using AlgoZone.Funnel.Datalayer.RabbitMQ;
 
 namespace AlgoZone.Funnel.Businesslayer.Funnel
 {
-    public class FunnelManager : IFunnelManager
+    public class FunnelManager : IFunnelManager, IDisposable
     {
         #region Fields
 
         private readonly IInputManager _inputManager;
+
+        private readonly RabbitMqDal _dal;
 
         #endregion
 
@@ -17,6 +20,7 @@ namespace AlgoZone.Funnel.Businesslayer.Funnel
         public FunnelManager(IInputManager inputManager)
         {
             _inputManager = inputManager;
+            _dal = new RabbitMqDal("localhost");
         }
 
         #endregion
@@ -36,12 +40,20 @@ namespace AlgoZone.Funnel.Businesslayer.Funnel
         /// <inheritdoc />
         public void RunFunnel()
         {
-            _inputManager.SubscribeToAllSymbolTickerUpdates(tick =>
+            _inputManager.SubscribeToAllSymbolTickerUpdates(async tick =>
             {
                 Console.WriteLine($"[{tick.Data.Symbol}] Tick: {tick.Data.BidPrice}:{tick.Data.AskPrice} {tick.Data.BidQuantity}:{tick.Data.AskQuantity}");
+                await _dal.Publish(tick);
             });
         }
 
         #endregion
+
+        /// <inheritdoc />
+        public void Dispose()
+        {
+            _inputManager?.Dispose();
+            _dal?.Dispose();
+        }
     }
 }

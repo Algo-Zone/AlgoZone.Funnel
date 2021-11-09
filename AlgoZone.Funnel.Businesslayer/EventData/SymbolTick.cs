@@ -1,5 +1,8 @@
-﻿namespace AlgoZone.Funnel.Businesslayer.EventData
+﻿using System;
+
+namespace AlgoZone.Funnel.Businesslayer.EventData
 {
+    [Serializable]
     public class SymbolTick : ISymbolData
     {
         #region Properties

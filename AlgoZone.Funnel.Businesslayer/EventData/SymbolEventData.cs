@@ -2,6 +2,7 @@
 
 namespace AlgoZone.Funnel.Businesslayer.EventData
 {
+    [Serializable]
     public class SymbolEventData<TSymbolData> : ISymbolEventData<TSymbolData>
         where TSymbolData : ISymbolData
     {

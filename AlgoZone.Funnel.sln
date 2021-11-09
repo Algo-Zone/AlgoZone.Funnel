@@ -8,6 +8,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlgoZone.Funnel.Datalayer.B
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlgoZone.Funnel.Exceptions", "AlgoZone.Funnel.Exceptions\AlgoZone.Funnel.Exceptions.csproj", "{7F3E03C9-4067-460A-B13F-FA7F11279DA4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlgoZone.Funnel.Datalayer.RabbitMQ", "AlgoZone.Funnel.Datalayer.RabbitMQ\AlgoZone.Funnel.Datalayer.RabbitMQ.csproj", "{770E1665-74FB-48E9-BCA1-E0185E9C4D9C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +32,9 @@ Global
 		{7F3E03C9-4067-460A-B13F-FA7F11279DA4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7F3E03C9-4067-460A-B13F-FA7F11279DA4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7F3E03C9-4067-460A-B13F-FA7F11279DA4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{770E1665-74FB-48E9-BCA1-E0185E9C4D9C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{770E1665-74FB-48E9-BCA1-E0185E9C4D9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{770E1665-74FB-48E9-BCA1-E0185E9C4D9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{770E1665-74FB-48E9-BCA1-E0185E9C4D9C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
