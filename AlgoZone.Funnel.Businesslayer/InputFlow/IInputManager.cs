@@ -1,6 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using AlgoZone.Funnel.Businesslayer.EventData;
+using AlgoZone.Core.EventData;
 
 namespace AlgoZone.Funnel.Businesslayer.InputFlow
 {

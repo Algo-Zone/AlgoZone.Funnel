@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using AlgoZone.Funnel.Businesslayer.EventData;
+using AlgoZone.Core.EventData;
 using AlgoZone.Funnel.Businesslayer.InputFlow.Providers;
 
 namespace AlgoZone.Funnel.Businesslayer.InputFlow
 {
-    public class InputManager : IInputManager, IDisposable
+    public class InputManager : IInputManager
     {
         #region Fields
 

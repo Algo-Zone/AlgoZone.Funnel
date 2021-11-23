@@ -1,5 +1,5 @@
 using System;
-using AlgoZone.Funnel.Businesslayer.EventData;
+using AlgoZone.Core.EventData;
 
 namespace AlgoZone.Funnel.Businesslayer.OutputFlow
 {

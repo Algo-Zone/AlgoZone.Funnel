@@ -1,6 +1,6 @@
 ﻿namespace AlgoZone.Funnel.Datalayer.Binance
 {
-    public class SymbolOrderBookEntry
+    public class SymbolBinanceOrderBookEntry
     {
         #region Properties
 

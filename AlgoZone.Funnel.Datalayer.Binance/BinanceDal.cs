@@ -90,9 +90,9 @@ namespace AlgoZone.Funnel.Datalayer.Binance
             };
         }
 
-        private static SymbolOrderBookEntry MapSymbolOrderBookEntry(BinanceOrderBookEntry orderBookEntry)
+        private static SymbolBinanceOrderBookEntry MapSymbolOrderBookEntry(BinanceOrderBookEntry orderBookEntry)
         {
-            return new SymbolOrderBookEntry
+            return new SymbolBinanceOrderBookEntry
             {
                 Price = orderBookEntry.Price,
                 Quantity = orderBookEntry.Quantity

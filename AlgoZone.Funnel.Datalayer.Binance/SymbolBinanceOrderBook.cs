@@ -7,9 +7,9 @@ namespace AlgoZone.Funnel.Datalayer.Binance
     {
         #region Properties
 
-        public ICollection<SymbolOrderBookEntry> Asks { get; set; }
+        public ICollection<SymbolBinanceOrderBookEntry> Asks { get; set; }
 
-        public ICollection<SymbolOrderBookEntry> Bids { get; set; }
+        public ICollection<SymbolBinanceOrderBookEntry> Bids { get; set; }
 
         public DateTime EventTime { get; set; }
 

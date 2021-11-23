@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using AlgoZone.Funnel.Businesslayer.EventData;
+using AlgoZone.Core.EventData;
 using AlgoZone.Funnel.Datalayer.Binance;
 
 namespace AlgoZone.Funnel.Businesslayer.InputFlow.Providers
@@ -113,7 +113,7 @@ namespace AlgoZone.Funnel.Businesslayer.InputFlow.Providers
             };
         }
 
-        private static SymbolOrderBookEntry MapSymbolOrderBookEntry(SymbolOrderBookEntry orderBookEntry)
+        private static SymbolOrderBookEntry MapSymbolOrderBookEntry(SymbolBinanceOrderBookEntry orderBookEntry)
         {
             return new SymbolOrderBookEntry
             {
