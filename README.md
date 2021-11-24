@@ -15,7 +15,7 @@ This will allow for easier deployment.
 - [x] InputStream
 - [x] Accept CLI arguments
 - [ ] PreProcessor
-- [ ] Connection with RabbitMQ
+- [x] Connection with RabbitMQ
 
 #### Exchange development
 - [ ] Binance (WIP)
