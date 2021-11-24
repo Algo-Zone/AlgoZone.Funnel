@@ -7,11 +7,11 @@ namespace AlgoZone.Funnel.Businesslayer.InputFlow.Providers
     {
         #region Methods
 
-        bool SubscribeToAllSymbolTickerUpdates(Action<ISymbolEventData<SymbolTick>> onTick);
+        bool SubscribeToAllSymbolTickerUpdates(Action<SymbolTickEventData> onTick);
 
-        bool SubscribeToSymbolOrderBookUpdates(string symbol, int interval, Action<ISymbolEventData<SymbolOrderBook>> onUpdate);
+        bool SubscribeToSymbolOrderBookUpdates(string symbol, int interval, Action<SymbolOrderBookEventData> onUpdate);
 
-        bool SubscribeToSymbolTickerUpdates(string symbol, Action<ISymbolEventData<SymbolTick>> onTick);
+        bool SubscribeToSymbolTickerUpdates(string symbol, Action<SymbolTickEventData> onTick);
 
         #endregion
     }

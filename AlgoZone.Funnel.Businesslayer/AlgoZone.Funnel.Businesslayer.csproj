@@ -5,12 +5,12 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\AlgoZone.Funnel.Datalayer.Binance\AlgoZone.Funnel.Datalayer.Binance.csproj" />
-      <ProjectReference Include="..\AlgoZone.Funnel.Datalayer.RabbitMQ\AlgoZone.Funnel.Datalayer.RabbitMQ.csproj" />
+      <PackageReference Include="AlgoZone.Core" Version="0.0.1" />
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="AlgoZone.Core" Version="0.1.0" />
+      <ProjectReference Include="..\AlgoZone.Funnel.Datalayer.Binance\AlgoZone.Funnel.Datalayer.Binance.csproj" />
+      <ProjectReference Include="..\AlgoZone.Funnel.Datalayer.RabbitMQ\AlgoZone.Funnel.Datalayer.RabbitMQ.csproj" />
     </ItemGroup>
 
 </Project>

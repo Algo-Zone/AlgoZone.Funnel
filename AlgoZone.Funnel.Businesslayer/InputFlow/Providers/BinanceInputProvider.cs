@@ -31,19 +31,7 @@ namespace AlgoZone.Funnel.Businesslayer.InputFlow.Providers
         }
 
         /// <inheritdoc />
-        public bool SubscribeToSymbolOrderBookUpdates(string symbol, int interval, Action<ISymbolEventData<SymbolOrderBook>> onUpdate)
-        {
-            return _binanceDal.SubscribeToSymbolOrderBookUpdates(symbol, interval, eventData => { onUpdate.Invoke(MapBinanceSymbolOrderBook(eventData)); });
-        }
-
-        /// <inheritdoc />
-        public bool SubscribeToSymbolTickerUpdates(string symbol, Action<ISymbolEventData<SymbolTick>> onTick)
-        {
-            return _binanceDal.SubscribeToSymbolTicker(symbol, eventData => { onTick.Invoke(MapBinanceSymbolTick(eventData)); });
-        }
-
-        /// <inheritdoc />
-        public bool SubscribeToAllSymbolTickerUpdates(Action<ISymbolEventData<SymbolTick>> onTick)
+        public bool SubscribeToAllSymbolTickerUpdates(Action<SymbolTickEventData> onTick)
         {
             return _binanceDal.SubscribeToAllSymbolTicker(eventData =>
             {
@@ -54,11 +42,23 @@ namespace AlgoZone.Funnel.Businesslayer.InputFlow.Providers
             });
         }
 
+        /// <inheritdoc />
+        public bool SubscribeToSymbolOrderBookUpdates(string symbol, int interval, Action<SymbolOrderBookEventData> onUpdate)
+        {
+            return _binanceDal.SubscribeToSymbolOrderBookUpdates(symbol, interval, eventData => { onUpdate.Invoke(MapBinanceSymbolOrderBook(eventData)); });
+        }
+
+        /// <inheritdoc />
+        public bool SubscribeToSymbolTickerUpdates(string symbol, Action<SymbolTickEventData> onTick)
+        {
+            return _binanceDal.SubscribeToSymbolTicker(symbol, eventData => { onTick.Invoke(MapBinanceSymbolTick(eventData)); });
+        }
+
         #region Static Methods
 
-        private static ISymbolEventData<SymbolOrderBook> MapBinanceSymbolOrderBook(BinanceSymbolEvent<SymbolBinanceOrderBook> binanceSymbolOrderBook)
+        private static SymbolOrderBookEventData MapBinanceSymbolOrderBook(BinanceSymbolEvent<SymbolBinanceOrderBook> binanceSymbolOrderBook)
         {
-            return new SymbolEventData<SymbolOrderBook>
+            return new SymbolOrderBookEventData
             {
                 Data = new SymbolOrderBook
                 {
@@ -75,9 +75,9 @@ namespace AlgoZone.Funnel.Businesslayer.InputFlow.Providers
             };
         }
 
-        private static ISymbolEventData<SymbolTick> MapBinanceSymbolTick(IBinanceEvent eventData, SymbolBinanceTick binanceTick)
+        private static SymbolTickEventData MapBinanceSymbolTick(IBinanceEvent eventData, SymbolBinanceTick binanceTick)
         {
-            return new SymbolEventData<SymbolTick>
+            return new SymbolTickEventData
             {
                 Data = new SymbolTick
                 {
@@ -94,9 +94,9 @@ namespace AlgoZone.Funnel.Businesslayer.InputFlow.Providers
             };
         }
 
-        private static ISymbolEventData<SymbolTick> MapBinanceSymbolTick(BinanceSymbolEvent<SymbolBinanceTick> binanceSymbolBinanceSymbolEvent)
+        private static SymbolTickEventData MapBinanceSymbolTick(BinanceSymbolEvent<SymbolBinanceTick> binanceSymbolBinanceSymbolEvent)
         {
-            return new SymbolEventData<SymbolTick>
+            return new SymbolTickEventData
             {
                 Data = new SymbolTick
                 {

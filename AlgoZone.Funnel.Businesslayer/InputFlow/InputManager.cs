@@ -30,19 +30,19 @@ namespace AlgoZone.Funnel.Businesslayer.InputFlow
         }
 
         /// <inheritdoc />
-        public bool SubscribeToAllSymbolTickerUpdates(Action<ISymbolEventData<SymbolTick>> onTick)
+        public bool SubscribeToAllSymbolTickerUpdates(Action<SymbolTickEventData> onTick)
         {
             return _inputProvider.SubscribeToAllSymbolTickerUpdates(onTick);
         }
 
         /// <inheritdoc />
-        public bool SubscribeToSymbolOrderBookUpdates(string symbol, int interval, Action<ISymbolEventData<SymbolOrderBook>> onUpdate)
+        public bool SubscribeToSymbolOrderBookUpdates(string symbol, int interval, Action<SymbolOrderBookEventData> onUpdate)
         {
             return _inputProvider.SubscribeToSymbolOrderBookUpdates(symbol, interval, onUpdate);
         }
 
         /// <inheritdoc />
-        public bool SubscribeToSymbolTickerUpdates(string symbol, Action<ISymbolEventData<SymbolTick>> onTick)
+        public bool SubscribeToSymbolTickerUpdates(string symbol, Action<SymbolTickEventData> onTick)
         {
             return _inputProvider.SubscribeToSymbolTickerUpdates(symbol, onTick);
         }

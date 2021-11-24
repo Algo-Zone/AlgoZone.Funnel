@@ -10,10 +10,9 @@ namespace AlgoZone.Funnel.Businesslayer.OutputFlow
         /// <summary>
         /// Publishes the event data.
         /// </summary>
-        /// <param name="symbolEventData">The event data to publish.</param>
-        /// <typeparam name="TSymbolData">The symbol data type.</typeparam>
+        /// <param name="eventData">The event to send.</param>
         /// <returns></returns>
-        bool PublishEvent<TSymbolData>(ISymbolEventData<TSymbolData> symbolEventData) where TSymbolData : ISymbolData;
+        bool PublishEvent<TEventData>(TEventData eventData) where TEventData : IEventData;
 
         #endregion
     }

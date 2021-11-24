@@ -2,6 +2,7 @@
 using System.Threading;
 using AlgoZone.Funnel.Businesslayer.Funnel;
 using AlgoZone.Funnel.Businesslayer.InputFlow;
+using AlgoZone.Funnel.Businesslayer.OutputFlow;
 using AlgoZone.Funnel.Exceptions;
 using AlgoZone.Funnel.Model;
 using CommandLine;
@@ -12,7 +13,7 @@ namespace AlgoZone.Funnel
     {
         #region Fields
 
-        private static readonly ManualResetEvent _quitEvent = new ManualResetEvent(false);
+        private static readonly ManualResetEvent QuitEvent = new ManualResetEvent(false);
 
         #endregion
 
@@ -24,7 +25,7 @@ namespace AlgoZone.Funnel
         {
             Console.CancelKeyPress += (sender, eArgs) =>
             {
-                _quitEvent.Set();
+                QuitEvent.Set();
                 eArgs.Cancel = true;
             };
 
@@ -42,7 +43,7 @@ namespace AlgoZone.Funnel
                           if (inputManager == null)
                               throw new Exception();
 
-                          var funnelManager = new FunnelManager(inputManager);
+                          var funnelManager = new FunnelManager(inputManager, new OutputManager());
 
                           if (o.AllSymbols)
                               funnelManager.RunFunnel();
@@ -52,7 +53,7 @@ namespace AlgoZone.Funnel
             }
             catch (NoExchangeProvidedException e0)
             {
-                Console.WriteLine($"No exchange availabile for input: {e0.ExchangeInput}");
+                Console.WriteLine($"No exchange available for input: {e0.ExchangeInput}");
             }
             catch (Exception)
             {
@@ -61,7 +62,7 @@ namespace AlgoZone.Funnel
 
             if (inputManager != null)
             {
-                _quitEvent.WaitOne();
+                QuitEvent.WaitOne();
 
                 inputManager?.Dispose();
             }
