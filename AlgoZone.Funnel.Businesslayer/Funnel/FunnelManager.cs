@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using AlgoZone.Funnel.Businesslayer.InputFlow;
 using AlgoZone.Funnel.Businesslayer.OutputFlow;
+using AlgoZone.Funnel.Datalayer.Elasticsearch;
 
 namespace AlgoZone.Funnel.Businesslayer.Funnel
 {
@@ -11,6 +12,7 @@ namespace AlgoZone.Funnel.Businesslayer.Funnel
 
         private readonly IInputManager _inputManager;
         private readonly IOutputManager _outputManager;
+        private readonly ElasticsearchDal _elasticsearchDal;
 
         #endregion
 
@@ -20,6 +22,7 @@ namespace AlgoZone.Funnel.Businesslayer.Funnel
         {
             _inputManager = inputManager;
             _outputManager = outputManager;
+            _elasticsearchDal = new ElasticsearchDal("elastic.lan", "80", "funnel");
         }
 
         #endregion
@@ -45,10 +48,19 @@ namespace AlgoZone.Funnel.Businesslayer.Funnel
         /// <inheritdoc />
         public void RunFunnel()
         {
-            _inputManager.SubscribeToAllSymbolTickerUpdates(tick =>
+            _inputManager.SubscribeToAllSymbolTickerUpdates(async tick =>
             {
                 Console.WriteLine($"[{tick.Data.Symbol}] Tick: {tick.Data.BidPrice}:{tick.Data.AskPrice} {tick.Data.BidQuantity}:{tick.Data.AskQuantity}");
-                _outputManager.PublishEvent(tick);
+
+                try
+                {
+                    await _elasticsearchDal.AddDocumentAsync(tick);
+                    await _outputManager.PublishEventAsync(tick);
+                }
+                catch (Exception)
+                {
+                    Console.WriteLine($"Something went wrong while getting tick for [{tick.Data.Symbol}]");
+                }
             });
         }
 

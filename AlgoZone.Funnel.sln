@@ -10,6 +10,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlgoZone.Funnel.Exceptions"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlgoZone.Funnel.Datalayer.RabbitMQ", "AlgoZone.Funnel.Datalayer.RabbitMQ\AlgoZone.Funnel.Datalayer.RabbitMQ.csproj", "{770E1665-74FB-48E9-BCA1-E0185E9C4D9C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlgoZone.Funnel.Datalayer.Elasticsearch", "AlgoZone.Funnel.Datalayer.Elasticsearch\AlgoZone.Funnel.Datalayer.Elasticsearch.csproj", "{EDF37B21-2E97-40CA-B059-01F01483E6C5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,5 +38,9 @@ Global
 		{770E1665-74FB-48E9-BCA1-E0185E9C4D9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{770E1665-74FB-48E9-BCA1-E0185E9C4D9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{770E1665-74FB-48E9-BCA1-E0185E9C4D9C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EDF37B21-2E97-40CA-B059-01F01483E6C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EDF37B21-2E97-40CA-B059-01F01483E6C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EDF37B21-2E97-40CA-B059-01F01483E6C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EDF37B21-2E97-40CA-B059-01F01483E6C5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

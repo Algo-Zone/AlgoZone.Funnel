@@ -10,6 +10,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\AlgoZone.Funnel.Datalayer.Binance\AlgoZone.Funnel.Datalayer.Binance.csproj" />
+      <ProjectReference Include="..\AlgoZone.Funnel.Datalayer.Elasticsearch\AlgoZone.Funnel.Datalayer.Elasticsearch.csproj" />
       <ProjectReference Include="..\AlgoZone.Funnel.Datalayer.RabbitMQ\AlgoZone.Funnel.Datalayer.RabbitMQ.csproj" />
     </ItemGroup>
 

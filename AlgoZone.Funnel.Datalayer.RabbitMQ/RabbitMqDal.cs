@@ -28,12 +28,21 @@ namespace AlgoZone.Funnel.Datalayer.RabbitMQ
         {
             _bus.Dispose();
         }
-
+        
         /// <summary>
         /// Publishes a message.
         /// </summary>
         /// <param name="message">The message to publish.</param>
         public async Task Publish<TMessageType>(TMessageType message)
+        {
+            await _bus.PubSub.PublishAsync(message);
+        }
+
+        /// <summary>
+        /// Publishes a message.
+        /// </summary>
+        /// <param name="message">The message to publish.</param>
+        public async Task PublishAsync<TMessageType>(TMessageType message)
         {
             await _bus.PubSub.PublishAsync(message);
         }
