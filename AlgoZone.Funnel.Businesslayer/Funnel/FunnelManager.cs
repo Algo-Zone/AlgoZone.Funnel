@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using AlgoZone.Core.EventData;
 using AlgoZone.Funnel.Businesslayer.InputFlow;
 using AlgoZone.Funnel.Businesslayer.OutputFlow;
 using AlgoZone.Funnel.Datalayer.Elasticsearch;
@@ -10,9 +12,10 @@ namespace AlgoZone.Funnel.Businesslayer.Funnel
     {
         #region Fields
 
+        private readonly ElasticsearchDal _elasticsearchDal;
+
         private readonly IInputManager _inputManager;
         private readonly IOutputManager _outputManager;
-        private readonly ElasticsearchDal _elasticsearchDal;
 
         #endregion
 
@@ -40,7 +43,7 @@ namespace AlgoZone.Funnel.Businesslayer.Funnel
         {
             foreach (var symbol in symbols)
             {
-                _inputManager.SubscribeToSymbolTickerUpdates(symbol, tick => { Console.WriteLine($"Tick: {tick.Data.BidPrice}:{tick.Data.AskPrice} {tick.Data.BidQuantity}:{tick.Data.AskQuantity}"); });
+                _inputManager.SubscribeToSymbolTickerUpdates(symbol, async tick => await HandleTick(tick));
                 _inputManager.SubscribeToSymbolOrderBookUpdates(symbol, 1000, orderBook => { Console.WriteLine($"Order book: {orderBook.Data.Asks.Count}:{orderBook.Data.Bids.Count}"); });
             }
         }
@@ -48,20 +51,26 @@ namespace AlgoZone.Funnel.Businesslayer.Funnel
         /// <inheritdoc />
         public void RunFunnel()
         {
-            _inputManager.SubscribeToAllSymbolTickerUpdates(async tick =>
-            {
-                Console.WriteLine($"[{tick.Data.Symbol}] Tick: {tick.Data.BidPrice}:{tick.Data.AskPrice} {tick.Data.BidQuantity}:{tick.Data.AskQuantity}");
+            _inputManager.SubscribeToAllSymbolTickerUpdates(async tick => await HandleTick(tick));
+        }
 
-                try
-                {
-                    await _elasticsearchDal.AddDocumentAsync(tick);
-                    await _outputManager.PublishEventAsync(tick);
-                }
-                catch (Exception)
-                {
-                    Console.WriteLine($"Something went wrong while getting tick for [{tick.Data.Symbol}]");
-                }
-            });
+        /// <summary>
+        /// Handles a tick event.
+        /// </summary>
+        /// <param name="tick">The tick event to handle.</param>
+        private async Task HandleTick(SymbolTickEventData tick)
+        {
+            Console.WriteLine($"[{tick.Data.Symbol}] Tick: {tick.Data.BidPrice}:{tick.Data.AskPrice} {tick.Data.BidQuantity}:{tick.Data.AskQuantity}");
+
+            try
+            {
+                await _elasticsearchDal.AddDocumentAsync(tick);
+                await _outputManager.PublishEventAsync(tick);
+            }
+            catch (Exception)
+            {
+                Console.WriteLine($"Something went wrong while getting tick for [{tick.Data.Symbol}]");
+            }
         }
 
         #endregion

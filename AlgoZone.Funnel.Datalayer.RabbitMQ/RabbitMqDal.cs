@@ -14,9 +14,9 @@ namespace AlgoZone.Funnel.Datalayer.RabbitMQ
 
         #region Constructors
 
-        public RabbitMqDal(string hostname)
+        public RabbitMqDal(string hostname, string username, string password)
         {
-            _bus = RabbitHutch.CreateBus($"host={hostname}");
+            _bus = RabbitHutch.CreateBus($"host={hostname};username={username};password={password}");
         }
 
         #endregion
