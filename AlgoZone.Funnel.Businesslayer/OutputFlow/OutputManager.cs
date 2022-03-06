@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using AlgoZone.Core.EventData;
 using AlgoZone.Funnel.Datalayer.RabbitMQ;
+using NLog;
 
 namespace AlgoZone.Funnel.Businesslayer.OutputFlow
 {
@@ -10,6 +11,8 @@ namespace AlgoZone.Funnel.Businesslayer.OutputFlow
         #region Fields
 
         private readonly RabbitMqDal _dal;
+        
+        private readonly ILogger _logger = LogManager.GetCurrentClassLogger();
 
         #endregion
 
@@ -35,12 +38,12 @@ namespace AlgoZone.Funnel.Businesslayer.OutputFlow
         {
             try
             {
-                _dal.Publish(eventData).ConfigureAwait(false);
+                _dal.Publish(eventData);
                 return true;
             }
             catch (Exception e)
             {
-                Console.WriteLine($"Something went wrong. Please try again later. {e}");
+                _logger.Log(LogLevel.Fatal, e);
             }
 
             return false;
@@ -56,7 +59,7 @@ namespace AlgoZone.Funnel.Businesslayer.OutputFlow
             }
             catch (Exception e)
             {
-                Console.WriteLine($"Something went wrong. Please try again later. {e}");
+                _logger.Log(LogLevel.Fatal, e);
             }
 
             return false;

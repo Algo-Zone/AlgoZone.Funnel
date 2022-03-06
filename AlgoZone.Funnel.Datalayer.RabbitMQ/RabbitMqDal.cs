@@ -1,6 +1,8 @@
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 using EasyNetQ;
+using NLog;
 
 namespace AlgoZone.Funnel.Datalayer.RabbitMQ
 {
@@ -9,6 +11,8 @@ namespace AlgoZone.Funnel.Datalayer.RabbitMQ
         #region Fields
 
         private readonly IBus _bus;
+        
+        private readonly ILogger _logger = LogManager.GetCurrentClassLogger();
 
         #endregion
 
@@ -16,7 +20,7 @@ namespace AlgoZone.Funnel.Datalayer.RabbitMQ
 
         public RabbitMqDal(string hostname, string username, string password)
         {
-            _bus = RabbitHutch.CreateBus($"host={hostname};username={username};password={password}");
+            _bus = RabbitHutch.CreateBus($"host={hostname};username={username};password={password};publisherConfirms=true;timeout=10");
         }
 
         #endregion
@@ -33,9 +37,9 @@ namespace AlgoZone.Funnel.Datalayer.RabbitMQ
         /// Publishes a message.
         /// </summary>
         /// <param name="message">The message to publish.</param>
-        public async Task Publish<TMessageType>(TMessageType message)
+        public void Publish<TMessageType>(TMessageType message)
         {
-            await _bus.PubSub.PublishAsync(message);
+            _bus.PubSub.Publish(message);
         }
 
         /// <summary>
@@ -44,7 +48,12 @@ namespace AlgoZone.Funnel.Datalayer.RabbitMQ
         /// <param name="message">The message to publish.</param>
         public async Task PublishAsync<TMessageType>(TMessageType message)
         {
-            await _bus.PubSub.PublishAsync(message);
+            await _bus.PubSub.PublishAsync(message)
+                      .ContinueWith(task =>
+                      {
+                          if (task.IsFaulted)
+                              _logger.Fatal(task.Exception);
+                      });
         }
 
         #endregion

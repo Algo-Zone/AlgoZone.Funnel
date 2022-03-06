@@ -6,6 +6,7 @@ using AlgoZone.Funnel.Businesslayer.OutputFlow;
 using AlgoZone.Funnel.Exceptions;
 using AlgoZone.Funnel.Model;
 using CommandLine;
+using NLog;
 
 namespace AlgoZone.Funnel
 {
@@ -14,6 +15,8 @@ namespace AlgoZone.Funnel
         #region Fields
 
         private static readonly ManualResetEvent QuitEvent = new ManualResetEvent(false);
+
+        private static readonly ILogger _logger = LogManager.GetCurrentClassLogger();
 
         #endregion
 
@@ -28,7 +31,7 @@ namespace AlgoZone.Funnel
                 QuitEvent.Set();
                 eArgs.Cancel = true;
             };
-
+              
             IInputManager inputManager = null;
             try
             {
@@ -55,9 +58,10 @@ namespace AlgoZone.Funnel
             {
                 Console.WriteLine($"No exchange available for input: {e0.ExchangeInput}");
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 Console.WriteLine("Something went wrong. Please try again later");
+                _logger.Log(LogLevel.Fatal, e);
             }
 
             if (inputManager != null)

@@ -5,6 +5,7 @@ using AlgoZone.Core.EventData;
 using AlgoZone.Funnel.Businesslayer.InputFlow;
 using AlgoZone.Funnel.Businesslayer.OutputFlow;
 using AlgoZone.Funnel.Datalayer.Elasticsearch;
+using NLog;
 
 namespace AlgoZone.Funnel.Businesslayer.Funnel
 {
@@ -15,6 +16,8 @@ namespace AlgoZone.Funnel.Businesslayer.Funnel
         private readonly ElasticsearchDal _elasticsearchDal;
 
         private readonly IInputManager _inputManager;
+
+        private readonly ILogger _logger = LogManager.GetCurrentClassLogger();
         private readonly IOutputManager _outputManager;
 
         #endregion
@@ -25,7 +28,7 @@ namespace AlgoZone.Funnel.Businesslayer.Funnel
         {
             _inputManager = inputManager;
             _outputManager = outputManager;
-            _elasticsearchDal = new ElasticsearchDal("elastic.lan", "80", "funnel");
+            _elasticsearchDal = new ElasticsearchDal("elastic.lan", "80", "events.ticks");
         }
 
         #endregion
@@ -60,16 +63,16 @@ namespace AlgoZone.Funnel.Businesslayer.Funnel
         /// <param name="tick">The tick event to handle.</param>
         private async Task HandleTick(SymbolTickEventData tick)
         {
-            Console.WriteLine($"[{tick.Data.Symbol}] Tick: {tick.Data.BidPrice}:{tick.Data.AskPrice} {tick.Data.BidQuantity}:{tick.Data.AskQuantity}");
+            //_logger.Log(LogLevel.Info, $"[{tick.Data.Symbol}] Tick: {tick.Data.BidPrice}:{tick.Data.AskPrice} {tick.Data.BidQuantity}:{tick.Data.AskQuantity}");
 
             try
             {
                 await _elasticsearchDal.AddDocumentAsync(tick);
                 await _outputManager.PublishEventAsync(tick);
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                Console.WriteLine($"Something went wrong while getting tick for [{tick.Data.Symbol}]");
+                _logger.Log(LogLevel.Fatal, e);
             }
         }
 

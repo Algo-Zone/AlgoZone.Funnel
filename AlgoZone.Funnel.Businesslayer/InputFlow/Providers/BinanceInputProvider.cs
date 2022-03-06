@@ -2,6 +2,7 @@
 using System.Linq;
 using AlgoZone.Core.EventData;
 using AlgoZone.Funnel.Datalayer.Binance;
+using NLog;
 
 namespace AlgoZone.Funnel.Businesslayer.InputFlow.Providers
 {
@@ -10,6 +11,8 @@ namespace AlgoZone.Funnel.Businesslayer.InputFlow.Providers
         #region Fields
 
         private readonly BinanceDal _binanceDal;
+
+        private readonly ILogger _logger = LogManager.GetCurrentClassLogger();
 
         #endregion
 
@@ -35,6 +38,8 @@ namespace AlgoZone.Funnel.Businesslayer.InputFlow.Providers
         {
             return _binanceDal.SubscribeToAllSymbolTicker(eventData =>
             {
+                Console.WriteLine($"{eventData.Data.Count()} tick events retrieved");
+                
                 foreach (var eventDataObject in eventData.Data)
                 {
                     onTick.Invoke(MapBinanceSymbolTick(eventData, eventDataObject));

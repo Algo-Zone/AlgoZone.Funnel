@@ -6,6 +6,7 @@
 
     <ItemGroup>
       <PackageReference Include="AlgoZone.Core" Version="0.0.1" />
+      <PackageReference Include="NLog" Version="5.0.0-rc1" />
     </ItemGroup>
 
     <ItemGroup>
