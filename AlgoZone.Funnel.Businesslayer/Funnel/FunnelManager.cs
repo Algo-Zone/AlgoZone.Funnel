@@ -28,7 +28,6 @@ namespace AlgoZone.Funnel.Businesslayer.Funnel
         {
             _inputManager = inputManager;
             _outputManager = outputManager;
-            _elasticsearchDal = new ElasticsearchDal("elastic.lan", "80", "events.ticks");
         }
 
         #endregion
@@ -67,7 +66,6 @@ namespace AlgoZone.Funnel.Businesslayer.Funnel
 
             try
             {
-                await _elasticsearchDal.AddDocumentAsync(tick);
                 await _outputManager.PublishEventAsync(tick);
             }
             catch (Exception e)
