@@ -20,7 +20,7 @@ namespace AlgoZone.Funnel.Businesslayer.OutputFlow
 
         public OutputManager()
         {
-            _dal = new RabbitMqDal("rabbitmq.lan", "admin", "admin");
+            _dal = new RabbitMqDal("rabbitmq", "guest", "guest");
         }
 
         #endregion
