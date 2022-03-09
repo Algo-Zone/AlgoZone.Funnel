@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AlgoZone.Core.EventData;
 using AlgoZone.Funnel.Businesslayer.InputFlow;
@@ -43,17 +44,20 @@ namespace AlgoZone.Funnel.Businesslayer.Funnel
         /// <inheritdoc />
         public void RunFunnel(IEnumerable<string> symbols)
         {
-            foreach (var symbol in symbols)
-            {
-                _inputManager.SubscribeToSymbolTickerUpdates(symbol, async tick => await HandleTick(tick));
-                _inputManager.SubscribeToSymbolOrderBookUpdates(symbol, 1000, orderBook => { Console.WriteLine($"Order book: {orderBook.Data.Asks.Count}:{orderBook.Data.Bids.Count}"); });
-            }
+            // foreach (var symbol in symbols)
+            // {
+            // _inputManager.SubscribeToSymbolTickerUpdates(symbol, async tick => await HandleTick(tick));
+            // _inputManager.SubscribeToSymbolOrderBookUpdates(symbol, 1000, orderBook => { Console.WriteLine($"Order book: {orderBook.Data.Asks.Count}:{orderBook.Data.Bids.Count}"); });
+            // }
+            _inputManager.SubscribeToSymbolsCandlesticksOneMinute(symbols, OnCandlestick);
         }
 
         /// <inheritdoc />
         public void RunFunnel()
         {
-            _inputManager.SubscribeToAllSymbolTickerUpdates(async tick => await HandleTick(tick));
+            var symbols = _inputManager.GetAllSymbols();
+            symbols = symbols.Where(s => s.StartsWith("BTC") || s.EndsWith("BTC"));
+            _inputManager.SubscribeToSymbolsCandlesticksOneMinute(symbols, OnCandlestick);
         }
 
         /// <summary>
@@ -72,6 +76,11 @@ namespace AlgoZone.Funnel.Businesslayer.Funnel
             {
                 _logger.Log(LogLevel.Fatal, e);
             }
+        }
+
+        private async void OnCandlestick(SymbolCandlestickEventData candlestick)
+        {
+            await _outputManager.PublishEventAsync(candlestick);
         }
 
         #endregion

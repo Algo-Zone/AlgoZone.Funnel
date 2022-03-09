@@ -5,7 +5,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="AlgoZone.Core" Version="0.0.2" />
+      <PackageReference Include="AlgoZone.Core" Version="0.0.3" />
+      <PackageReference Include="AutoMapper" Version="11.0.1" />
       <PackageReference Include="NLog" Version="5.0.0-rc1" />
     </ItemGroup>
 

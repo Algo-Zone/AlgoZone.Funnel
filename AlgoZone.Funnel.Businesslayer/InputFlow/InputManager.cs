@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using AlgoZone.Core.EventData;
 using AlgoZone.Funnel.Businesslayer.InputFlow.Providers;
 
@@ -30,6 +31,12 @@ namespace AlgoZone.Funnel.Businesslayer.InputFlow
         }
 
         /// <inheritdoc />
+        public IEnumerable<string> GetAllSymbols()
+        {
+            return _inputProvider.GetAllSymbols();
+        }
+
+        /// <inheritdoc />
         public bool SubscribeToAllSymbolTickerUpdates(Action<SymbolTickEventData> onTick)
         {
             return _inputProvider.SubscribeToAllSymbolTickerUpdates(onTick);
@@ -39,6 +46,12 @@ namespace AlgoZone.Funnel.Businesslayer.InputFlow
         public bool SubscribeToSymbolOrderBookUpdates(string symbol, int interval, Action<SymbolOrderBookEventData> onUpdate)
         {
             return _inputProvider.SubscribeToSymbolOrderBookUpdates(symbol, interval, onUpdate);
+        }
+
+        /// <inheritdoc />
+        public bool SubscribeToSymbolsCandlesticksOneMinute(IEnumerable<string> symbols, Action<SymbolCandlestickEventData> onCandlestick)
+        {
+            return _inputProvider.SubscribeToSymbolsCandlesticksOneMinute(symbols, onCandlestick);
         }
 
         /// <inheritdoc />

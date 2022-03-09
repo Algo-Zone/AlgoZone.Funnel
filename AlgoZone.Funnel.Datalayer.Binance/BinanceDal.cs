@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Binance.Net;
+using Binance.Net.Clients;
+using Binance.Net.Enums;
 using Binance.Net.Interfaces;
 using Binance.Net.Objects;
+using Binance.Net.Objects.Models;
+using Binance.Net.Objects.Models.Spot.Socket;
 using CryptoExchange.Net.Sockets;
 
 namespace AlgoZone.Funnel.Datalayer.Binance
@@ -37,13 +40,26 @@ namespace AlgoZone.Funnel.Datalayer.Binance
         }
 
         /// <summary>
+        /// Gets a string list of all the symbols currently on binance.
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<string> GetAllSymbols()
+        {
+            var response = _client.SpotApi.ExchangeData.GetExchangeInfoAsync().Result;
+            if (response == null || !response.Success)
+                return new List<string>();
+
+            return response.Data.Symbols.Select(s => s.Name);
+        }
+
+        /// <summary>
         /// Subscribes to the symbol tick updates.
         /// </summary>
         /// <param name="onTick">The event callback.</param>
         /// <returns></returns>
         public bool SubscribeToAllSymbolTicker(Action<BinanceSymbolEvent<IEnumerable<SymbolBinanceTick>>> onTick)
         {
-            return _socketClient.Spot.SubscribeToAllSymbolTickerUpdatesAsync(eventData => { onTick.Invoke(MapSymbolTicks(eventData)); }).Result.Success;
+            return _socketClient.SpotStreams.SubscribeToAllTickerUpdatesAsync(eventData => { onTick.Invoke(MapSymbolTicks(eventData)); }).Result.Success;
         }
 
         /// <summary>
@@ -55,7 +71,18 @@ namespace AlgoZone.Funnel.Datalayer.Binance
         /// <returns></returns>
         public bool SubscribeToSymbolOrderBookUpdates(string symbol, int interval, Action<BinanceSymbolEvent<SymbolBinanceOrderBook>> onUpdate)
         {
-            return _socketClient.Spot.SubscribeToOrderBookUpdatesAsync(symbol, interval, eventData => { onUpdate.Invoke(MapSymbolOrderBook(eventData)); }).Result.Success;
+            return _socketClient.SpotStreams.SubscribeToOrderBookUpdatesAsync(symbol, interval, eventData => { onUpdate.Invoke(MapSymbolOrderBook(eventData)); }).Result.Success;
+        }
+
+        /// <summary>
+        /// Subscribes to the one minute candlesticks for a list of symbols.
+        /// </summary>
+        /// <param name="symbols">The list of symbols.</param>
+        /// <param name="onCandlestick">The event callback.</param>
+        /// <returns></returns>
+        public bool SubscribeToSymbolsOneMinuteCandlesticks(IEnumerable<string> symbols, Action<BinanceSymbolEvent<SymbolBinanceKline>> onCandlestick)
+        {
+            return _socketClient.SpotStreams.SubscribeToKlineUpdatesAsync(symbols, KlineInterval.OneMinute, eventData => { onCandlestick.Invoke(MapSymbolKline(eventData)); }).Result.Success;
         }
 
         /// <summary>
@@ -66,10 +93,30 @@ namespace AlgoZone.Funnel.Datalayer.Binance
         /// <returns></returns>
         public bool SubscribeToSymbolTicker(string symbol, Action<BinanceSymbolEvent<SymbolBinanceTick>> onTick)
         {
-            return _socketClient.Spot.SubscribeToSymbolTickerUpdatesAsync(symbol, eventData => { onTick.Invoke(MapSymbolTick(eventData)); }).Result.Success;
+            return _socketClient.SpotStreams.SubscribeToTickerUpdatesAsync(symbol, eventData => { onTick.Invoke(MapSymbolTick(eventData)); }).Result.Success;
         }
 
         #region Static Methods
+
+        private static BinanceSymbolEvent<SymbolBinanceKline> MapSymbolKline(DataEvent<IBinanceStreamKlineData> binanceKline)
+        {
+            var data = binanceKline.Data.Data as BinanceStreamKline;
+            return new BinanceSymbolEvent<SymbolBinanceKline>
+            {
+                Data = new SymbolBinanceKline
+                {
+                    Open = data.OpenPrice,
+                    High = data.HighPrice,
+                    Low = data.LowPrice,
+                    Close = data.ClosePrice,
+                    Volume = data.Volume,
+                    Timestamp = data.OpenTime
+                },
+                Timestamp = binanceKline.Timestamp,
+                Topic = binanceKline.Topic,
+                OriginalData = binanceKline.OriginalData
+            };
+        }
 
         private static BinanceSymbolEvent<SymbolBinanceOrderBook> MapSymbolOrderBook(DataEvent<IBinanceEventOrderBook> binanceOrderBook)
         {
@@ -99,6 +146,25 @@ namespace AlgoZone.Funnel.Datalayer.Binance
             };
         }
 
+        private static BinanceSymbolEvent<SymbolBinanceTick> MapSymbolTick(DataEvent<IBinanceTick> binanceTick)
+        {
+            return new BinanceSymbolEvent<SymbolBinanceTick>
+            {
+                Data = new SymbolBinanceTick
+                {
+                    AskPrice = binanceTick.Data.BestAskPrice,
+                    AskQuantity = binanceTick.Data.BestAskQuantity,
+                    BidPrice = binanceTick.Data.BestBidPrice,
+                    BidQuantity = binanceTick.Data.BestBidQuantity,
+                    PrevDayClosePrice = binanceTick.Data.PrevDayClosePrice,
+                    Symbol = binanceTick.Data.Symbol
+                },
+                Timestamp = binanceTick.Timestamp,
+                Topic = binanceTick.Topic,
+                OriginalData = binanceTick.OriginalData
+            };
+        }
+
         private static BinanceSymbolEvent<IEnumerable<SymbolBinanceTick>> MapSymbolTicks(DataEvent<IEnumerable<IBinanceTick>> binanceTick)
         {
             return new BinanceSymbolEvent<IEnumerable<SymbolBinanceTick>>
@@ -106,33 +172,14 @@ namespace AlgoZone.Funnel.Datalayer.Binance
                 Data = binanceTick.Data.Select(bt =>
                                                    new SymbolBinanceTick
                                                    {
-                                                       AskPrice = bt.AskPrice,
-                                                       AskQuantity = bt.AskQuantity,
-                                                       BidPrice = bt.BidPrice,
-                                                       BidQuantity = bt.BidQuantity,
+                                                       AskPrice = bt.BestAskPrice,
+                                                       AskQuantity = bt.BestAskQuantity,
+                                                       BidPrice = bt.BestBidPrice,
+                                                       BidQuantity = bt.BestBidQuantity,
                                                        PrevDayClosePrice = bt.PrevDayClosePrice,
                                                        Symbol = bt.Symbol
                                                    }
                 ),
-                Timestamp = binanceTick.Timestamp,
-                Topic = binanceTick.Topic,
-                OriginalData = binanceTick.OriginalData
-            };
-        }
-
-        private static BinanceSymbolEvent<SymbolBinanceTick> MapSymbolTick(DataEvent<IBinanceTick> binanceTick)
-        {
-            return new BinanceSymbolEvent<SymbolBinanceTick>
-            {
-                Data = new SymbolBinanceTick
-                {
-                    AskPrice = binanceTick.Data.AskPrice,
-                    AskQuantity = binanceTick.Data.AskQuantity,
-                    BidPrice = binanceTick.Data.BidPrice,
-                    BidQuantity = binanceTick.Data.BidQuantity,
-                    PrevDayClosePrice = binanceTick.Data.PrevDayClosePrice,
-                    Symbol = binanceTick.Data.Symbol
-                },
                 Timestamp = binanceTick.Timestamp,
                 Topic = binanceTick.Topic,
                 OriginalData = binanceTick.OriginalData
