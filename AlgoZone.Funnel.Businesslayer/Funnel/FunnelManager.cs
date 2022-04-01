@@ -44,6 +44,9 @@ namespace AlgoZone.Funnel.Businesslayer.Funnel
         /// <inheritdoc />
         public void RunFunnel(IEnumerable<string> symbols)
         {
+            var tradingPairs = _inputManager.GetAllTradingPairs().ToList();
+            PublishTradingPairs(tradingPairs);
+
             // foreach (var symbol in symbols)
             // {
             // _inputManager.SubscribeToSymbolTickerUpdates(symbol, async tick => await HandleTick(tick));
@@ -55,7 +58,10 @@ namespace AlgoZone.Funnel.Businesslayer.Funnel
         /// <inheritdoc />
         public void RunFunnel()
         {
-            var symbols = _inputManager.GetAllSymbols();
+            var tradingPairs = _inputManager.GetAllTradingPairs().ToList();
+            PublishTradingPairs(tradingPairs);
+
+            var symbols = tradingPairs.Select(tp => tp.Topic);
             symbols = symbols.Where(s => s.StartsWith("BTC") || s.EndsWith("BTC"));
             _inputManager.SubscribeToSymbolsCandlesticksOneMinute(symbols, OnCandlestick);
         }
@@ -81,6 +87,14 @@ namespace AlgoZone.Funnel.Businesslayer.Funnel
         private async void OnCandlestick(SymbolCandlestickEventData candlestick)
         {
             await _outputManager.PublishEventAsync(candlestick);
+        }
+
+        private void PublishTradingPairs(IEnumerable<SymbolTradingPairEventData> tradingPairs)
+        {
+            foreach (var tradingPair in tradingPairs)
+            {
+                _outputManager.PublishEvent(tradingPair);
+            }
         }
 
         #endregion

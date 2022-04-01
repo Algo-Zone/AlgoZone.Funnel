@@ -8,7 +8,7 @@ namespace AlgoZone.Funnel.Businesslayer.InputFlow.Providers
     {
         #region Methods
 
-        IEnumerable<string> GetAllSymbols();
+        IEnumerable<SymbolTradingPairEventData> GetAllTradingPairs();
 
         bool SubscribeToAllSymbolTickerUpdates(Action<SymbolTickEventData> onTick);
 

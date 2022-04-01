@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using AlgoZone.Core.EventData;
 using AlgoZone.Funnel.Businesslayer.InputFlow.Providers;
 
@@ -31,9 +32,9 @@ namespace AlgoZone.Funnel.Businesslayer.InputFlow
         }
 
         /// <inheritdoc />
-        public IEnumerable<string> GetAllSymbols()
+        public IEnumerable<SymbolTradingPairEventData> GetAllTradingPairs()
         {
-            return _inputProvider.GetAllSymbols();
+            return _inputProvider.GetAllTradingPairs();
         }
 
         /// <inheritdoc />

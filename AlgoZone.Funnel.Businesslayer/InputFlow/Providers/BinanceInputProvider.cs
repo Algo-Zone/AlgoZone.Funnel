@@ -42,9 +42,9 @@ namespace AlgoZone.Funnel.Businesslayer.InputFlow.Providers
         }
 
         /// <inheritdoc />
-        public IEnumerable<string> GetAllSymbols()
+        public IEnumerable<SymbolTradingPairEventData> GetAllTradingPairs()
         {
-            return _binanceDal.GetAllSymbols();
+            return _binanceDal.GetAllTradingPairs().Select(MapBinanceSymbolTradingPair).ToList();
         }
 
         /// <inheritdoc />
@@ -140,6 +140,23 @@ namespace AlgoZone.Funnel.Businesslayer.InputFlow.Providers
                 Timestamp = binanceSymbolBinanceSymbolEvent.Timestamp,
                 Topic = binanceSymbolBinanceSymbolEvent.Topic,
                 OriginalData = binanceSymbolBinanceSymbolEvent.OriginalData
+            };
+        }
+
+        private static SymbolTradingPairEventData MapBinanceSymbolTradingPair(SymbolBinance symbolBinance)
+        {
+            return new SymbolTradingPairEventData
+            {
+                Data = new SymbolTradingPair
+                {
+                    Status = symbolBinance.Status,
+                    Symbol = symbolBinance.Symbol,
+                    BaseAsset = symbolBinance.BaseAsset,
+                    QuoteAsset = symbolBinance.QuoteAsset
+                },
+                Timestamp = DateTime.Now,
+                Topic = symbolBinance.Symbol,
+                OriginalData = string.Empty
             };
         }
 

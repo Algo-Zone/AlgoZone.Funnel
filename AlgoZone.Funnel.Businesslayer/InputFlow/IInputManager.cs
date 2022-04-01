@@ -9,10 +9,10 @@ namespace AlgoZone.Funnel.Businesslayer.InputFlow
         #region Methods
 
         /// <summary>
-        /// Gets all the symbols.
+        /// Gets all the trading pairs.
         /// </summary>
         /// <returns></returns>
-        IEnumerable<string> GetAllSymbols();
+        IEnumerable<SymbolTradingPairEventData> GetAllTradingPairs();
 
         /// <summary>
         /// Subscribes to tick events for all symbols.

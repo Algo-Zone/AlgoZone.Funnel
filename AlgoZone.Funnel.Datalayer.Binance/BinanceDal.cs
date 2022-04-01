@@ -6,6 +6,7 @@ using Binance.Net.Enums;
 using Binance.Net.Interfaces;
 using Binance.Net.Objects;
 using Binance.Net.Objects.Models;
+using Binance.Net.Objects.Models.Spot;
 using Binance.Net.Objects.Models.Spot.Socket;
 using CryptoExchange.Net.Sockets;
 
@@ -40,16 +41,16 @@ namespace AlgoZone.Funnel.Datalayer.Binance
         }
 
         /// <summary>
-        /// Gets a string list of all the symbols currently on binance.
+        /// Gets a string list of all the trading pairs currently on binance.
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<string> GetAllSymbols()
+        public IEnumerable<SymbolBinance> GetAllTradingPairs()
         {
             var response = _client.SpotApi.ExchangeData.GetExchangeInfoAsync().Result;
             if (response == null || !response.Success)
-                return new List<string>();
+                return new List<SymbolBinance>();
 
-            return response.Data.Symbols.Select(s => s.Name);
+            return response.Data.Symbols.Select(MapSymbolBinance);
         }
 
         /// <summary>
@@ -97,6 +98,17 @@ namespace AlgoZone.Funnel.Datalayer.Binance
         }
 
         #region Static Methods
+
+        private static SymbolBinance MapSymbolBinance(BinanceSymbol symbol)
+        {
+            return new SymbolBinance
+            {
+                Symbol = symbol.Name,
+                BaseAsset = symbol.BaseAsset,
+                QuoteAsset = symbol.QuoteAsset,
+                Status = symbol.Status.ToString()
+            };
+        }
 
         private static BinanceSymbolEvent<SymbolBinanceKline> MapSymbolKline(DataEvent<IBinanceStreamKlineData> binanceKline)
         {
