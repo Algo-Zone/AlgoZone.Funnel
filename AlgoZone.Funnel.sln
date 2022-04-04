@@ -12,6 +12,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlgoZone.Funnel.Datalayer.R
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlgoZone.Funnel.Datalayer.Elasticsearch", "AlgoZone.Funnel.Datalayer.Elasticsearch\AlgoZone.Funnel.Datalayer.Elasticsearch.csproj", "{EDF37B21-2E97-40CA-B059-01F01483E6C5}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Datalayer", "Datalayer", "{AB93DDE5-B4C4-41EF-9B43-C28ADFFDD6B3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,5 +44,10 @@ Global
 		{EDF37B21-2E97-40CA-B059-01F01483E6C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EDF37B21-2E97-40CA-B059-01F01483E6C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EDF37B21-2E97-40CA-B059-01F01483E6C5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{1E169AD4-7D3F-485C-B919-417280B8484B} = {AB93DDE5-B4C4-41EF-9B43-C28ADFFDD6B3}
+		{EDF37B21-2E97-40CA-B059-01F01483E6C5} = {AB93DDE5-B4C4-41EF-9B43-C28ADFFDD6B3}
+		{770E1665-74FB-48E9-BCA1-E0185E9C4D9C} = {AB93DDE5-B4C4-41EF-9B43-C28ADFFDD6B3}
 	EndGlobalSection
 EndGlobal
