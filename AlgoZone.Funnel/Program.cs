@@ -1,12 +1,17 @@
 ﻿using System;
+using System.CommandLine;
+using System.CommandLine.Builder;
+using System.CommandLine.Parsing;
 using System.Threading;
+using AlgoZone.Funnel.Businesslayer.Enums;
 using AlgoZone.Funnel.Businesslayer.Funnel;
 using AlgoZone.Funnel.Businesslayer.InputFlow;
 using AlgoZone.Funnel.Businesslayer.OutputFlow;
+using AlgoZone.Funnel.Commands;
 using AlgoZone.Funnel.Exceptions;
-using AlgoZone.Funnel.Model;
-using CommandLine;
+using LightInject;
 using NLog;
+using LogLevel = NLog.LogLevel;
 
 namespace AlgoZone.Funnel
 {
@@ -14,9 +19,9 @@ namespace AlgoZone.Funnel
     {
         #region Fields
 
-        private static readonly ManualResetEvent QuitEvent = new ManualResetEvent(false);
-
         private static readonly ILogger _logger = LogManager.GetCurrentClassLogger();
+
+        private static readonly ManualResetEvent QuitEvent = new ManualResetEvent(false);
 
         #endregion
 
@@ -31,28 +36,12 @@ namespace AlgoZone.Funnel
                 QuitEvent.Set();
                 eArgs.Cancel = true;
             };
-              
-            IInputManager inputManager = null;
+
             try
             {
-                Parser.Default.ParseArguments<CommandLineOptions>(args)
-                      .WithParsed(o =>
-                      {
-                          var exchange = GetExchange(o.Exchange);
-                          if (exchange == Exchange.Unknown || string.IsNullOrWhiteSpace(o.Exchange))
-                              throw new NoExchangeProvidedException(o.Exchange);
-
-                          inputManager = GetInputManager(exchange);
-                          if (inputManager == null)
-                              throw new Exception();
-
-                          var funnelManager = new FunnelManager(inputManager, new OutputManager());
-
-                          if (o.AllSymbols)
-                              funnelManager.RunFunnel();
-                          else
-                              funnelManager.RunFunnel(o.Symbols);
-                      });
+                var container = BuildServiceContainer();
+                var parser = BuildParser(container);
+                parser.Invoke(args);
             }
             catch (NoExchangeProvidedException e0)
             {
@@ -64,41 +53,32 @@ namespace AlgoZone.Funnel
                 _logger.Log(LogLevel.Fatal, e);
             }
 
-            if (inputManager != null)
-            {
-                QuitEvent.WaitOne();
-
-                inputManager?.Dispose();
-            }
+            QuitEvent.WaitOne();
         }
 
-        /// <summary>
-        /// Gets the exchange based on it's name.
-        /// </summary>
-        /// <param name="exchangeName">The exchange name.</param>
-        /// <returns></returns>
-        private static Exchange GetExchange(string exchangeName)
+        private static Parser BuildParser(IServiceFactory services)
         {
-            if (Constants.BinanceNames.Contains(exchangeName.ToLower()))
-                return Exchange.Binance;
+            var rootCommand = new RootCommand();
 
-            return Exchange.Unknown;
+            rootCommand.Name = "funnel";
+            rootCommand.Description = "Commands to run funnel";
+
+            foreach (var command in services.GetAllInstances<Command>())
+                rootCommand.AddCommand(command);
+
+            return new CommandLineBuilder(rootCommand).UseDefaults().Build();
         }
 
-        /// <summary>
-        /// Gets the input manager for an exchange.
-        /// </summary>
-        /// <param name="exchange">The exchange for which to get the input manager.</param>
-        /// <returns></returns>
-        private static IInputManager GetInputManager(Exchange exchange)
+        private static ServiceContainer BuildServiceContainer()
         {
-            switch (exchange)
-            {
-                case Exchange.Binance:
-                    return new BinanceInputManager();
-            }
+            var container = new ServiceContainer();
 
-            return new BinanceInputManager();
+            container.RegisterSingleton<IInputManager, BinanceInputManager>(Exchange.Binance.ToString());
+            container.RegisterSingleton<IOutputManager, OutputManager>();
+            container.RegisterSingleton<IFunnelManager, FunnelManager>();
+            container.RegisterSingleton<RunCommand>();
+
+            return container;
         }
 
         #endregion

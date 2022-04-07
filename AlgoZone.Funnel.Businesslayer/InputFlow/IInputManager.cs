@@ -1,12 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using AlgoZone.Core.EventData;
+using AlgoZone.Funnel.Businesslayer.Enums;
 
 namespace AlgoZone.Funnel.Businesslayer.InputFlow
 {
     public interface IInputManager : IDisposable
     {
         #region Methods
+        
+        /// <summary>
+        /// Gets the exchange for this input manager.
+        /// </summary>
+        Exchange Exchange { get; }
 
         /// <summary>
         /// Gets all the trading pairs.

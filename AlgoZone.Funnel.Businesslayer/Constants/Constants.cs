@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace AlgoZone.Funnel
+namespace AlgoZone.Funnel.Businesslayer.Constants
 {
     public static class Constants
     {

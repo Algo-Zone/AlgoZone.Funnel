@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AlgoZone.Core.EventData;
+using AlgoZone.Funnel.Businesslayer.Enums;
 using AlgoZone.Funnel.Businesslayer.InputFlow;
 using AlgoZone.Funnel.Businesslayer.OutputFlow;
-using AlgoZone.Funnel.Datalayer.Elasticsearch;
+using AlgoZone.Funnel.Exceptions;
 using NLog;
 
 namespace AlgoZone.Funnel.Businesslayer.Funnel
@@ -14,21 +15,22 @@ namespace AlgoZone.Funnel.Businesslayer.Funnel
     {
         #region Fields
 
-        private readonly ElasticsearchDal _elasticsearchDal;
-
-        private readonly IInputManager _inputManager;
+        private readonly IEnumerable<IInputManager> _inputManagers;
 
         private readonly ILogger _logger = LogManager.GetCurrentClassLogger();
         private readonly IOutputManager _outputManager;
+        private IInputManager _selectedInputManager;
 
         #endregion
 
         #region Constructors
 
-        public FunnelManager(IInputManager inputManager, IOutputManager outputManager)
+        public FunnelManager(IEnumerable<IInputManager> inputManagers, IOutputManager outputManager)
         {
-            _inputManager = inputManager;
+            _inputManagers = inputManagers;
             _outputManager = outputManager;
+
+            _selectedInputManager = _inputManagers.FirstOrDefault();
         }
 
         #endregion
@@ -38,13 +40,13 @@ namespace AlgoZone.Funnel.Businesslayer.Funnel
         /// <inheritdoc />
         public void Dispose()
         {
-            _inputManager?.Dispose();
+            _selectedInputManager?.Dispose();
         }
 
         /// <inheritdoc />
         public void RunFunnel(IEnumerable<string> symbols)
         {
-            var tradingPairs = _inputManager.GetAllTradingPairs().ToList();
+            var tradingPairs = _selectedInputManager.GetAllTradingPairs().ToList();
             PublishTradingPairs(tradingPairs);
 
             // foreach (var symbol in symbols)
@@ -52,18 +54,31 @@ namespace AlgoZone.Funnel.Businesslayer.Funnel
             // _inputManager.SubscribeToSymbolTickerUpdates(symbol, async tick => await HandleTick(tick));
             // _inputManager.SubscribeToSymbolOrderBookUpdates(symbol, 1000, orderBook => { Console.WriteLine($"Order book: {orderBook.Data.Asks.Count}:{orderBook.Data.Bids.Count}"); });
             // }
-            _inputManager.SubscribeToSymbolsCandlesticksOneMinute(symbols, OnCandlestick);
+            _selectedInputManager.SubscribeToSymbolsCandlesticksOneMinute(symbols, OnCandlestick);
         }
 
         /// <inheritdoc />
         public void RunFunnel()
         {
-            var tradingPairs = _inputManager.GetAllTradingPairs().ToList();
+            var tradingPairs = _selectedInputManager.GetAllTradingPairs().ToList();
             PublishTradingPairs(tradingPairs);
 
             var symbols = tradingPairs.Select(tp => tp.Topic);
             symbols = symbols.Where(s => s.StartsWith("BTC") || s.EndsWith("BTC"));
-            _inputManager.SubscribeToSymbolsCandlesticksOneMinute(symbols, OnCandlestick);
+            _selectedInputManager.SubscribeToSymbolsCandlesticksOneMinute(symbols, OnCandlestick);
+        }
+
+        /// <inheritdoc />
+        public void SetExchange(string exchange)
+        {
+            if (string.IsNullOrWhiteSpace(exchange))
+                throw new NoExchangeProvidedException(exchange);
+
+            var parsedExchange = GetExchange(exchange);
+            if (parsedExchange == Exchange.Unknown)
+                throw new NoExchangeProvidedException(exchange);
+
+            _selectedInputManager = _inputManagers.FirstOrDefault(i => i.Exchange == parsedExchange);
         }
 
         /// <summary>
@@ -72,8 +87,6 @@ namespace AlgoZone.Funnel.Businesslayer.Funnel
         /// <param name="tick">The tick event to handle.</param>
         private async Task HandleTick(SymbolTickEventData tick)
         {
-            //_logger.Log(LogLevel.Info, $"[{tick.Data.Symbol}] Tick: {tick.Data.BidPrice}:{tick.Data.AskPrice} {tick.Data.BidQuantity}:{tick.Data.AskQuantity}");
-
             try
             {
                 await _outputManager.PublishEventAsync(tick);
@@ -96,6 +109,23 @@ namespace AlgoZone.Funnel.Businesslayer.Funnel
                 _outputManager.PublishEvent(tradingPair);
             }
         }
+
+        #region Static Methods
+
+        /// <summary>
+        /// Gets the exchange based on it's name.
+        /// </summary>
+        /// <param name="exchangeName">The exchange name.</param>
+        /// <returns></returns>
+        private static Exchange GetExchange(string exchangeName)
+        {
+            if (Constants.Constants.BinanceNames.Contains(exchangeName.ToLower()))
+                return Exchange.Binance;
+
+            return Exchange.Unknown;
+        }
+
+        #endregion
 
         #endregion
     }

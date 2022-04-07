@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using AlgoZone.Core.EventData;
+using AlgoZone.Funnel.Businesslayer.Enums;
 using AlgoZone.Funnel.Businesslayer.InputFlow.Providers;
 
 namespace AlgoZone.Funnel.Businesslayer.InputFlow
 {
-    public class InputManager : IInputManager
+    public abstract class InputManager : IInputManager
     {
         #region Fields
 
@@ -30,6 +31,9 @@ namespace AlgoZone.Funnel.Businesslayer.InputFlow
         {
             _inputProvider.Dispose();
         }
+
+        /// <inheritdoc />
+        public abstract Exchange Exchange { get; }
 
         /// <inheritdoc />
         public IEnumerable<SymbolTradingPairEventData> GetAllTradingPairs()

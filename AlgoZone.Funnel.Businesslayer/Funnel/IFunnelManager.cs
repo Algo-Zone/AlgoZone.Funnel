@@ -18,6 +18,12 @@ namespace AlgoZone.Funnel.Businesslayer.Funnel
         /// <returns></returns>
         void RunFunnel();
 
+        /// <summary>
+        /// Sets the correct exchange to use.
+        /// </summary>
+        /// <param name="exchange">The exchange.</param>
+        void SetExchange(string exchange);
+
         #endregion
     }
 }

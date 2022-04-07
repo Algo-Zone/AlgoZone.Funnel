@@ -1,4 +1,4 @@
-namespace AlgoZone.Funnel.Model
+namespace AlgoZone.Funnel.Businesslayer.Enums
 {
     public enum Exchange
     {
