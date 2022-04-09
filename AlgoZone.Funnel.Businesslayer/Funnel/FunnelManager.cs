@@ -46,6 +46,7 @@ namespace AlgoZone.Funnel.Businesslayer.Funnel
         /// <inheritdoc />
         public void RunFunnel(IEnumerable<string> symbols)
         {
+            _logger.Info($"Running funnel for symbols: {string.Join(", ", symbols)}");
             var tradingPairs = _selectedInputManager.GetAllTradingPairs().ToList();
             PublishTradingPairs(tradingPairs);
 
