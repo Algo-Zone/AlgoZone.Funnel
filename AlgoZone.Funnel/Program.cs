@@ -87,7 +87,7 @@ namespace AlgoZone.Funnel
                 return new OutputManager(host, username, password);
             });
             container.RegisterSingleton<IFunnelManager, FunnelManager>();
-            container.RegisterSingleton<RunCommand>();
+            container.RegisterSingleton<Command, RunCommand>();
 
             return container;
         }

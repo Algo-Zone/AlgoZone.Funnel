@@ -19,7 +19,7 @@ namespace AlgoZone.Funnel.Commands
             AddOption(CreateExchangeOption());
             AddOption(CreateSymbolOption());
 
-            CommandHandler.Create((string exchange, string symbols) =>
+            Handler = CommandHandler.Create((string exchange, string symbols) =>
             {
                 _funnelManager.SetExchange(exchange);
                 
