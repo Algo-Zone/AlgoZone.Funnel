@@ -74,10 +74,12 @@ namespace AlgoZone.Funnel
 
         private static ServiceContainer BuildServiceContainer()
         {
+            CreateConfiguration();
+            
             var container = new ServiceContainer();
 
             container.RegisterSingleton<IInputManager, BinanceInputManager>(Exchange.Binance.ToString());
-            container.RegisterSingleton<IOutputManager>(factory: factory =>
+            container.RegisterSingleton<IOutputManager>(factory =>
             {
                 var host = _configuration.GetSection(ConfigurationConstants.RabbitMqHost).Value;
                 var username = _configuration.GetSection(ConfigurationConstants.RabbitMqUsername).Value;
