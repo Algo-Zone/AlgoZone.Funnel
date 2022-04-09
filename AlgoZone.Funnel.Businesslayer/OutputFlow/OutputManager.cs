@@ -18,9 +18,9 @@ namespace AlgoZone.Funnel.Businesslayer.OutputFlow
 
         #region Constructors
 
-        public OutputManager()
+        public OutputManager(string hostname, string username, string password)
         {
-            _dal = new RabbitMqDal("rabbitmq", "guest", "guest");
+            _dal = new RabbitMqDal(hostname, username, password);
         }
 
         #endregion

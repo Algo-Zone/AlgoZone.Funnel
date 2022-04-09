@@ -10,6 +10,7 @@ using AlgoZone.Funnel.Businesslayer.OutputFlow;
 using AlgoZone.Funnel.Commands;
 using AlgoZone.Funnel.Exceptions;
 using LightInject;
+using Microsoft.Extensions.Configuration;
 using NLog;
 using LogLevel = NLog.LogLevel;
 
@@ -18,6 +19,8 @@ namespace AlgoZone.Funnel
     public static class Program
     {
         #region Fields
+
+        private static IConfiguration _configuration;
 
         private static readonly ILogger _logger = LogManager.GetCurrentClassLogger();
 
@@ -74,11 +77,24 @@ namespace AlgoZone.Funnel
             var container = new ServiceContainer();
 
             container.RegisterSingleton<IInputManager, BinanceInputManager>(Exchange.Binance.ToString());
-            container.RegisterSingleton<IOutputManager, OutputManager>();
+            container.RegisterSingleton<IOutputManager>(factory: factory =>
+            {
+                var host = _configuration.GetSection(ConfigurationConstants.RabbitMqHost).Value;
+                var username = _configuration.GetSection(ConfigurationConstants.RabbitMqUsername).Value;
+                var password = _configuration.GetSection(ConfigurationConstants.RabbitMqPassword).Value;
+                return new OutputManager(host, username, password);
+            });
             container.RegisterSingleton<IFunnelManager, FunnelManager>();
             container.RegisterSingleton<RunCommand>();
 
             return container;
+        }
+
+        private static void CreateConfiguration()
+        {
+            _configuration = new ConfigurationBuilder()
+                             .AddEnvironmentVariables()
+                             .Build();
         }
 
         #endregion
