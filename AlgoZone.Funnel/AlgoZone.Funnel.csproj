@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\AlgoZone.Funnel.Businesslayer\AlgoZone.Funnel.Businesslayer.csproj" />
+      <ProjectReference Include="..\AlgoZone.Funnel.Exceptions\AlgoZone.Funnel.Exceptions.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="LightInject" Version="6.4.1" />
+      <PackageReference Include="NLog.Config" Version="4.7.13" />
+      <PackageReference Include="NLog.Targets.ElasticSearch" Version="7.6.0" />
+      <PackageReference Include="System.CommandLine" Version="2.0.0-beta3.22114.1" />
+      <PackageReference Include="System.CommandLine.NamingConventionBinder" Version="2.0.0-beta3.22114.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="NLog.config" />
+      <Content Include="NLog.config">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+    </ItemGroup>
+
+</Project>

@@ -1,0 +1,53 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlgoZone.Funnel", "AlgoZone.Funnel\AlgoZone.Funnel.csproj", "{F1712F35-CC9D-47A3-8B22-B341C30B2735}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlgoZone.Funnel.Businesslayer", "AlgoZone.Funnel.Businesslayer\AlgoZone.Funnel.Businesslayer.csproj", "{74651259-0B9F-456A-A3A3-945E6DD7695D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlgoZone.Funnel.Datalayer.Binance", "AlgoZone.Funnel.Datalayer.Binance\AlgoZone.Funnel.Datalayer.Binance.csproj", "{1E169AD4-7D3F-485C-B919-417280B8484B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlgoZone.Funnel.Exceptions", "AlgoZone.Funnel.Exceptions\AlgoZone.Funnel.Exceptions.csproj", "{7F3E03C9-4067-460A-B13F-FA7F11279DA4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlgoZone.Funnel.Datalayer.RabbitMQ", "AlgoZone.Funnel.Datalayer.RabbitMQ\AlgoZone.Funnel.Datalayer.RabbitMQ.csproj", "{770E1665-74FB-48E9-BCA1-E0185E9C4D9C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlgoZone.Funnel.Datalayer.Elasticsearch", "AlgoZone.Funnel.Datalayer.Elasticsearch\AlgoZone.Funnel.Datalayer.Elasticsearch.csproj", "{EDF37B21-2E97-40CA-B059-01F01483E6C5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Datalayer", "Datalayer", "{AB93DDE5-B4C4-41EF-9B43-C28ADFFDD6B3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F1712F35-CC9D-47A3-8B22-B341C30B2735}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F1712F35-CC9D-47A3-8B22-B341C30B2735}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F1712F35-CC9D-47A3-8B22-B341C30B2735}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F1712F35-CC9D-47A3-8B22-B341C30B2735}.Release|Any CPU.Build.0 = Release|Any CPU
+		{74651259-0B9F-456A-A3A3-945E6DD7695D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{74651259-0B9F-456A-A3A3-945E6DD7695D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{74651259-0B9F-456A-A3A3-945E6DD7695D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{74651259-0B9F-456A-A3A3-945E6DD7695D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1E169AD4-7D3F-485C-B919-417280B8484B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E169AD4-7D3F-485C-B919-417280B8484B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E169AD4-7D3F-485C-B919-417280B8484B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E169AD4-7D3F-485C-B919-417280B8484B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F3E03C9-4067-460A-B13F-FA7F11279DA4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F3E03C9-4067-460A-B13F-FA7F11279DA4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F3E03C9-4067-460A-B13F-FA7F11279DA4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F3E03C9-4067-460A-B13F-FA7F11279DA4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{770E1665-74FB-48E9-BCA1-E0185E9C4D9C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{770E1665-74FB-48E9-BCA1-E0185E9C4D9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{770E1665-74FB-48E9-BCA1-E0185E9C4D9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{770E1665-74FB-48E9-BCA1-E0185E9C4D9C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EDF37B21-2E97-40CA-B059-01F01483E6C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EDF37B21-2E97-40CA-B059-01F01483E6C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EDF37B21-2E97-40CA-B059-01F01483E6C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EDF37B21-2E97-40CA-B059-01F01483E6C5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{1E169AD4-7D3F-485C-B919-417280B8484B} = {AB93DDE5-B4C4-41EF-9B43-C28ADFFDD6B3}
+		{EDF37B21-2E97-40CA-B059-01F01483E6C5} = {AB93DDE5-B4C4-41EF-9B43-C28ADFFDD6B3}
+		{770E1665-74FB-48E9-BCA1-E0185E9C4D9C} = {AB93DDE5-B4C4-41EF-9B43-C28ADFFDD6B3}
+	EndGlobalSection
+EndGlobal
