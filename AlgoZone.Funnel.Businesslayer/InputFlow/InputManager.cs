@@ -4,6 +4,7 @@ using System.Linq;
 using AlgoZone.Core.EventData;
 using AlgoZone.Funnel.Businesslayer.Enums;
 using AlgoZone.Funnel.Businesslayer.InputFlow.Providers;
+using AlgoZone.Funnel.Businesslayer.Models;
 
 namespace AlgoZone.Funnel.Businesslayer.InputFlow
 {
@@ -39,6 +40,18 @@ namespace AlgoZone.Funnel.Businesslayer.InputFlow
         public IEnumerable<SymbolTradingPairEventData> GetAllTradingPairs()
         {
             return _inputProvider.GetAllTradingPairs();
+        }
+
+        /// <inheritdoc />
+        public ICollection<Candlestick> GetCandlesticks(string symbol, DateTime startDateTime, DateTime endDateTime)
+        {
+            return _inputProvider.GetCandlesticks(symbol, startDateTime, endDateTime);
+        }
+
+        /// <inheritdoc />
+        public ICollection<Candlestick> GetCandlesticks(string symbol, DateTime startDateTime, int limit = 1000)
+        {
+            return _inputProvider.GetCandlesticks(symbol, startDateTime, limit);
         }
 
         /// <inheritdoc />

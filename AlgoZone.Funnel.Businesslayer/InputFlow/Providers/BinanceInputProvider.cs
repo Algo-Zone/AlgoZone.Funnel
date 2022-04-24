@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using AlgoZone.Core.EventData;
 using AlgoZone.Funnel.Businesslayer.Mappers;
+using AlgoZone.Funnel.Businesslayer.Models;
 using AlgoZone.Funnel.Datalayer.Binance;
 using AutoMapper;
 using NLog;
@@ -23,12 +24,10 @@ namespace AlgoZone.Funnel.Businesslayer.InputFlow.Providers
 
         #region Constructors
 
-        public BinanceInputProvider()
+        public BinanceInputProvider(IMapper mapper)
         {
             _binanceDal = new BinanceDal();
-
-            var mapperConfiguration = new MapperConfiguration(cfg => { cfg.AddProfile<CandlestickProfile>(); });
-            _mapper = mapperConfiguration.CreateMapper();
+            _mapper = mapper;
         }
 
         #endregion
@@ -45,6 +44,18 @@ namespace AlgoZone.Funnel.Businesslayer.InputFlow.Providers
         public IEnumerable<SymbolTradingPairEventData> GetAllTradingPairs()
         {
             return _binanceDal.GetAllTradingPairs().Select(MapBinanceSymbolTradingPair).ToList();
+        }
+
+        /// <inheritdoc />
+        public ICollection<Candlestick> GetCandlesticks(string symbol, DateTime startDateTime, DateTime endDateTime)
+        {
+            return _binanceDal.GetKlines(symbol, startDateTime, endDateTime).Select(MapToCandlestick).ToList();
+        }
+
+        /// <inheritdoc />
+        public ICollection<Candlestick> GetCandlesticks(string symbol, DateTime startDateTime, int limit = 1000)
+        {
+            return _binanceDal.GetKlines(symbol, startDateTime, limit).Select(MapToCandlestick).ToList();
         }
 
         /// <inheritdoc />
@@ -82,6 +93,11 @@ namespace AlgoZone.Funnel.Businesslayer.InputFlow.Providers
         private SymbolCandlestickEventData MapBinanceSymbolCandlestick(BinanceSymbolEvent<SymbolBinanceKline> binanceSymbolKline)
         {
             return _mapper.Map<SymbolCandlestickEventData>(binanceSymbolKline);
+        }
+
+        private Candlestick MapToCandlestick(SymbolBinanceKline kline)
+        {
+            return _mapper.Map<Candlestick>(kline);
         }
 
         #region Static Methods

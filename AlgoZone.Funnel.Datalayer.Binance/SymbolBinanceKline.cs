@@ -12,6 +12,11 @@ namespace AlgoZone.Funnel.Datalayer.Binance
         public decimal Close { get; set; }
 
         /// <summary>
+        /// The close time of the candlestick.
+        /// </summary>
+        public DateTime CloseTime { get; set; }
+
+        /// <summary>
         /// The highest price of the candlestick.
         /// </summary>
         public decimal High { get; set; }
@@ -27,9 +32,9 @@ namespace AlgoZone.Funnel.Datalayer.Binance
         public decimal Open { get; set; }
 
         /// <summary>
-        /// The timestamp of the candlestick.
+        /// The open time of the candlestick.
         /// </summary>
-        public DateTime Timestamp { get; set; }
+        public DateTime OpenTime { get; set; }
 
         /// <summary>
         /// The volume of the candlestick.

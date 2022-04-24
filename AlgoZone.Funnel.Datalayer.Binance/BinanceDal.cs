@@ -47,10 +47,55 @@ namespace AlgoZone.Funnel.Datalayer.Binance
         public IEnumerable<SymbolBinance> GetAllTradingPairs()
         {
             var response = _client.SpotApi.ExchangeData.GetExchangeInfoAsync().Result;
-            if (response == null || !response.Success)
+            if (!response.Success)
                 return new List<SymbolBinance>();
 
             return response.Data.Symbols.Select(MapSymbolBinance);
+        }
+
+        /// <summary>
+        /// Get a list of klines from a [startDateTime] limited to [limit] klines per minute.
+        /// </summary>
+        /// <param name="symbol">The symbol for which to get the klines.</param>
+        /// <param name="startDateTime">The start date time.</param>
+        /// <param name="limit">The limit of klines.</param>
+        /// <returns></returns>
+        public IEnumerable<SymbolBinanceKline> GetKlines(string symbol, DateTime startDateTime, int limit = 1000)
+        {
+            var response = _client.SpotApi.ExchangeData.GetKlinesAsync(symbol, KlineInterval.OneMinute, startDateTime, limit: limit).Result;
+            if (!response.Success)
+                return new List<SymbolBinanceKline>();
+
+            return response.Data.Select(MapToBinanceSymbolKline).ToList();
+        }
+
+        /// <summary>
+        /// Get a list of klines from a [startDateTime] to an [endDateTime] per minute.
+        /// </summary>
+        /// <param name="symbol">The symbol for which to get the klines.</param>
+        /// <param name="startDateTime">The start date time.</param>
+        /// <param name="endDateTime">The end date time.</param>
+        /// <returns></returns>
+        public IEnumerable<SymbolBinanceKline> GetKlines(string symbol, DateTime startDateTime, DateTime endDateTime)
+        {
+            var timespan = endDateTime - startDateTime;
+            var dates = Enumerable.Range(0, (int)(timespan.TotalMinutes + 1))
+                                    .Select(m => startDateTime.AddMinutes(m))
+                                    .ToList();
+
+            var index = 0;
+            var klines = new List<IBinanceKline>();
+            while (dates.Skip(index).Any())
+            {
+                var splitDates = dates.Skip(index).Take(1000).ToList();
+                var response = _client.SpotApi.ExchangeData.GetKlinesAsync(symbol, KlineInterval.OneMinute, splitDates.First(), splitDates.Last(), limit: 1000).Result;
+                if (response.Success)
+                    klines.AddRange(response.Data);
+                
+                index += 1000;
+            }
+
+            return klines.Select(MapToBinanceSymbolKline).ToList();
         }
 
         /// <summary>
@@ -122,7 +167,8 @@ namespace AlgoZone.Funnel.Datalayer.Binance
                     Low = data.LowPrice,
                     Close = data.ClosePrice,
                     Volume = data.Volume,
-                    Timestamp = data.OpenTime
+                    OpenTime = data.OpenTime,
+                    CloseTime = data.CloseTime
                 },
                 Timestamp = binanceKline.Timestamp,
                 Topic = binanceKline.Topic,
@@ -195,6 +241,20 @@ namespace AlgoZone.Funnel.Datalayer.Binance
                 Timestamp = binanceTick.Timestamp,
                 Topic = binanceTick.Topic,
                 OriginalData = binanceTick.OriginalData
+            };
+        }
+
+        private static SymbolBinanceKline MapToBinanceSymbolKline(IBinanceKline kline)
+        {
+            return new SymbolBinanceKline
+            {
+                Open = kline.OpenPrice,
+                High = kline.HighPrice,
+                Low = kline.LowPrice,
+                Close = kline.ClosePrice,
+                Volume = kline.Volume,
+                OpenTime = kline.OpenTime,
+                CloseTime = kline.CloseTime
             };
         }
 

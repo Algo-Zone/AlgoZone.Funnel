@@ -7,6 +7,7 @@ using AlgoZone.Funnel.Businesslayer.Enums;
 using AlgoZone.Funnel.Businesslayer.InputFlow;
 using AlgoZone.Funnel.Businesslayer.OutputFlow;
 using AlgoZone.Funnel.Exceptions;
+using AutoMapper;
 using NLog;
 
 namespace AlgoZone.Funnel.Businesslayer.Funnel
@@ -20,15 +21,17 @@ namespace AlgoZone.Funnel.Businesslayer.Funnel
         private readonly ILogger _logger = LogManager.GetCurrentClassLogger();
         private readonly IOutputManager _outputManager;
         private IInputManager _selectedInputManager;
+        private IMapper _mapper;
 
         #endregion
 
         #region Constructors
 
-        public FunnelManager(IEnumerable<IInputManager> inputManagers, IOutputManager outputManager)
+        public FunnelManager(IEnumerable<IInputManager> inputManagers, IOutputManager outputManager, IMapper mapper)
         {
             _inputManagers = inputManagers;
             _outputManager = outputManager;
+            _mapper = mapper;
 
             _selectedInputManager = _inputManagers.FirstOrDefault();
         }
@@ -44,17 +47,42 @@ namespace AlgoZone.Funnel.Businesslayer.Funnel
         }
 
         /// <inheritdoc />
+        public void ImportHistory(string symbol)
+        {
+            var startDate = new DateTime(2017, 1, 1);
+            var endDate = DateTime.Now;
+            var days = Enumerable.Range(0, 1 + endDate.Subtract(startDate).Days)
+                      .Select(offset => startDate.AddDays(offset))
+                      .ToArray(); 
+            foreach(var day in days)
+            {
+                var candlesticks = _selectedInputManager.GetCandlesticks(symbol, day, day.AddDays(1).AddTicks(-1));
+                var mappedCandlesticks = candlesticks.Select(c =>
+                {
+                    var candlestick = _mapper.Map<SymbolCandlestick>(c);
+                    candlestick.Symbol = symbol;
+                    return new SymbolCandlestickEventData
+                    {
+                        Data = candlestick,
+                        EventDataType = EventDataType.Tick,
+                        Timestamp = DateTime.Now,
+                        Topic = symbol
+                    };
+                }).ToList();
+                foreach (var candlestickEventData in mappedCandlesticks)
+                    OnCandlestick(candlestickEventData);
+                
+                _logger.Info($"Imported {candlesticks.Count} candlesticks for date {day:dd-MM-yyyy}");
+            }
+        }
+
+        /// <inheritdoc />
         public void RunFunnel(IEnumerable<string> symbols)
         {
             _logger.Info($"Running funnel for symbols: {string.Join(", ", symbols)}");
             var tradingPairs = _selectedInputManager.GetAllTradingPairs().ToList();
             PublishTradingPairs(tradingPairs);
-
-            // foreach (var symbol in symbols)
-            // {
-            // _inputManager.SubscribeToSymbolTickerUpdates(symbol, async tick => await HandleTick(tick));
-            // _inputManager.SubscribeToSymbolOrderBookUpdates(symbol, 1000, orderBook => { Console.WriteLine($"Order book: {orderBook.Data.Asks.Count}:{orderBook.Data.Bids.Count}"); });
-            // }
+            
             _selectedInputManager.SubscribeToSymbolsCandlesticksOneMinute(symbols, OnCandlestick);
         }
 

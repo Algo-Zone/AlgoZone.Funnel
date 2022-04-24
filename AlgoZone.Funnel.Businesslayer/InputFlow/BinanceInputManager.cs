@@ -1,5 +1,6 @@
 ﻿using AlgoZone.Funnel.Businesslayer.Enums;
 using AlgoZone.Funnel.Businesslayer.InputFlow.Providers;
+using AutoMapper;
 
 namespace AlgoZone.Funnel.Businesslayer.InputFlow
 {
@@ -14,7 +15,7 @@ namespace AlgoZone.Funnel.Businesslayer.InputFlow
 
         #region Constructors
 
-        public BinanceInputManager() : base(new BinanceInputProvider()) { }
+        public BinanceInputManager(IMapper mapper) : base(new BinanceInputProvider(mapper)) { }
 
         #endregion
     }

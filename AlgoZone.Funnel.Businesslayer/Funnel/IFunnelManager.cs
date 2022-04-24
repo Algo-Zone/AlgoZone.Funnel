@@ -7,6 +7,12 @@ namespace AlgoZone.Funnel.Businesslayer.Funnel
         #region Methods
 
         /// <summary>
+        /// Imports all candlesticks for a specific symbol.
+        /// </summary>
+        /// <param name="symbol">The symbol for which to import data.</param>
+        void ImportHistory(string symbol);
+
+        /// <summary>
         /// Runs the funnel for specific symbols.
         /// </summary>
         /// <returns></returns>

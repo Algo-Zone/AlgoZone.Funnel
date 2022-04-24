@@ -6,9 +6,11 @@ using System.Threading;
 using AlgoZone.Funnel.Businesslayer.Enums;
 using AlgoZone.Funnel.Businesslayer.Funnel;
 using AlgoZone.Funnel.Businesslayer.InputFlow;
+using AlgoZone.Funnel.Businesslayer.Mappers;
 using AlgoZone.Funnel.Businesslayer.OutputFlow;
 using AlgoZone.Funnel.Commands;
 using AlgoZone.Funnel.Exceptions;
+using AutoMapper;
 using LightInject;
 using Microsoft.Extensions.Configuration;
 using NLog;
@@ -87,7 +89,16 @@ namespace AlgoZone.Funnel
                 return new OutputManager(host, username, password);
             });
             container.RegisterSingleton<IFunnelManager, FunnelManager>();
-            container.RegisterSingleton<Command, RunCommand>();
+            container.RegisterSingleton<Command, RunCommand>(nameof(RunCommand));
+            container.RegisterSingleton<Command, HistoryCommand>(nameof(HistoryCommand));
+            container.Register(factory =>
+            {
+                var config = new MapperConfiguration(cfg =>
+                {
+                    cfg.AddProfile<CandlestickProfile>();
+                });
+                return config.CreateMapper();
+            });
 
             return container;
         }
